@@ -1,0 +1,37 @@
+## 2018 Larvae Cross Tentative Plan for DNA methylation sequencing
+
+**Purpose**: Identify some short term objectives for determining the number of samples we will sequence to examine the broad question of DNA Methylation inheritance in oysters.
+
+**Goal / Timeline**: Have these results ready for Aug 26th 2019 to decided target samples
+
+**Information that needs to be confirmed**:
+
+* Number of samples we have available from Block 1
+  * 16 female egg samples
+  * How many larvae samples (3 days exposure)?
+  * How many zygote samples (8 hour zygotes)?
+
+* Review with Elise the larvae phenotype data and identify pools to determine which pools might be particularly interesting.
+
+* Write up tentative sequencing costs sheet based on Novaseq s1 and Illumina 4500 using parameters we discussed 
+  * WGBS vs MBD
+  * 40x coverage
+  * 10% duplication
+  * 685 mb genome size vs MBD size (get from Roberts group?)
+  * 200 bp length (find citation discussing optimal read length and send to Katie) - Zymo kit recommends 50 bp length - so for Illumina calculator will use 100 bp for paired-end reads https://www.zymoresearch.com/products/pico-methyl-seq-library-prep-kit
+
+* Look up different enrichment kits and reach out to see if we can get samples
+  * MBD kits vs MeDip Kits
+  * [List of methods](https://docs.google.com/spreadsheets/d/1WwWe-j4m44hrLCsZfnguvY13ncIgInQrhwBsKOz2nvU/edit#gid=0) 
+
+* Update and check cost calculation sheet to confirm estimates
+  * Thing to verify in cost calculator:
+    * Amount of reads per lane
+    * Account for different sequencers
+    * Inclusion of enrichment techniques
+    * Explote options for using MBD approach (currently only WGBS or MECsSEQ (based on exome capture)
+
+* Extraction method used by Jon Puritz for use on filters 
+ 
+**Testing Samples**
+* Testing our ability to extract DNA from filtered samples using Block 3 individuals.
