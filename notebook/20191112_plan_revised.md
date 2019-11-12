@@ -22,7 +22,7 @@
 
 * Kit comes with 6 indexes. These are the same as those from the [*TruSeq Small RNA Kits*](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/samplepreps_truseq/truseqsmallrna/truseq-small-rna-library-prep-kit-reference-guide-15004197-02.pdf)
 * That kit has up to 148 index adapter sequences, however, there are grouped into 4 groups, and not all indexes can be multipexed together. See [page 25 of this index pooling guide](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/index-adapters-pooling-guide-1000000041074-07.pdf).
-* I think in theory these should be compatiple with our custom adapters given that they both were based on TruSeq Illumina design, but **NEED TO CHECK ON THIS**.
+* I think in theory these should be compatiple with some of our custom adapters given that they both were based on TruSeq Illumina design. Looks like they will work for at least some of Jons old eec-seq adapters potentially, but may not be ideal for the kapa lib. prep primers we more recently ordered.
 
 [Detailed info about small RNA primers used by illumina (and adopted by zymo in this kit) on pg 32](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/illumina-adapter-sequences-1000000002694-11.pdf)
 
