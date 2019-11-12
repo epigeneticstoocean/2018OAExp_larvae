@@ -3,9 +3,11 @@
 **Description** : To look at intergenerational DNA methylation I will be using a **WGBSseq** approach to sequence female (eggs) and larvae (pooled samples on filters) to look at the potential for transmission of epigenetic marks, with a specific focus on identifying marks that are differentially methylated among OA treatments.
 
 **Samples**
-* Eggs from females exposed for 1 month (2 treatments x 8 females per treatment)
-* Zygotes (fertilized eggs reared in control conditions for a couple of hours)
-* Larvae  (3 day old D stage larvae)
+* Eggs from females exposed for 1 month (2 treatments x 8 females per treatment) = 8 samples
+* Zygotes (fertilized eggs reared in control conditions for a couple of hours) = 
+* Larvae  (3 day old D stage larvae) = 
+
+* Sample targets will also focus on sampelst that overlap with Elises work on larvae structure using the SEM [LINK](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20191111_EliseSampleList.md)
 
 **Sequencing Pipeline**
 * Extraction using omega kit (using our current kit to try out the extraction protocol)
@@ -18,12 +20,19 @@
 
 **Barcoding Breakdown**
 
-**Sequence Estimates**
+* Kit comes with 6 indexes. These are the same as those from the [*TruSeq Small RNA Kits*](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/samplepreps_truseq/truseqsmallrna/truseq-small-rna-library-prep-kit-reference-guide-15004197-02.pdf)
+* That kit has up to 148 index adapter sequences, however, there are grouped into 4 groups, and not all indexes can be multipexed together. See [page 25 of this index pooling guide](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/index-adapters-pooling-guide-1000000041074-07.pdf).
+* I think in theory these should be compatiple with our custom adapters given that they both were based on TruSeq Illumina design, but **NEED TO CHECK ON THIS**.
 
 **Sequencer Targets**
 * Machine :  Illumina 4500
 * Coverage : 40x
 * Expected duplication % : 10% (based on previous data)
 * Bp length : Zymo recommends 50bp (100 bp paired).
+
+**Sequence Estimates**
+
+[LINK for simple workup of estimates using illumina calculator and harvard core facility pricing](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20191112_illuminaCostCalSummary.md)
+
 
 
