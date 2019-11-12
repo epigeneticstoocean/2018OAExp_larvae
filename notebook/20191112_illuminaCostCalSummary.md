@@ -12,8 +12,10 @@
 
 **Illumina 4500 (2x75bp)** 
 * 25000 / 4420 = 5.6 lanes (x2 samples per lane) = 10-12 samples with ~25x expected coverage
+
 **Nova Seq S1**
 * 25000 / 9863 =  2.53 (x12 samples per lane) = 24 samples with ~25x expected coverage
+
 **Nova Seq S1**
 * 25000 / 18093 = 1.382 (x32 samples per lane) = 32 samples with ~25x expected coverage
 
