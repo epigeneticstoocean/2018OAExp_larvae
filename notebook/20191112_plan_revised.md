@@ -24,6 +24,13 @@
 * That kit has up to 148 index adapter sequences, however, there are grouped into 4 groups, and not all indexes can be multipexed together. See [page 25 of this index pooling guide](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/index-adapters-pooling-guide-1000000041074-07.pdf).
 * I think in theory these should be compatiple with our custom adapters given that they both were based on TruSeq Illumina design, but **NEED TO CHECK ON THIS**.
 
+[Detailed info about small RNA primers used by illumina (and adopted by zymo in this kit) on pg 32](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/illumina-adapter-sequences-1000000002694-11.pdf)
+
+RNA PCR Primer(RP1)  
+5′AATGATACGGCGACCACCGAGATCTACACGTTCAGAGTTCTACAGTCCGA  
+RNA PCR Index Primers  
+5′CAAGCAGAAGACGGCATACGAGAT[6bases]GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA  
+
 [LINK to our primer / index database](https://docs.google.com/spreadsheets/d/1chXHQN3bYWArrUJmSRBO9Q_H8i_63yZAIdsu1xE6KHc/edit#gid=917843354)
 
 **Sequencer Targets**
