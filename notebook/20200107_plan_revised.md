@@ -38,6 +38,8 @@ RNA PCR Index Primers
 
 [LINK to our primer / index database](https://docs.google.com/spreadsheets/d/1chXHQN3bYWArrUJmSRBO9Q_H8i_63yZAIdsu1xE6KHc/edit#gid=917843354)
 
+[Order info for illumina small RNA Tru Seq Adapters](https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/truseq-small-rna.html)
+
 **Sequencer Targets**
 * Machine :  Illumina 4500
 * Coverage : 40x
