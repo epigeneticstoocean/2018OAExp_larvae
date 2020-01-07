@@ -24,6 +24,10 @@
 * That kit has up to 148 index adapter sequences, however, there are grouped into 4 groups, and not all indexes can be multipexed together. See [page 25 of this index pooling guide](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/index-adapters-pooling-guide-1000000041074-07.pdf).
 * I think in theory these should be compatiple with some of our custom adapters given that they both were based on TruSeq Illumina design. Looks like they will work for at least some of Jons old eec-seq adapters potentially, but may not be ideal for the kapa lib. prep primers we more recently ordered.
 
+**Multiplex Thoughts from Zymo from there pico kit Q and A**  
+1. Ensure that there is diversity within the first couple of bases. Illumina recommends **choosing barcodes that do not share the same base at the position 2.** Order new primers according to the “Can additional index primers be purchased for multiplexing?” section 3. Illumina recommends the following multiplexing strategy for 6 or fewer samples: Pool of 2 samples: • Index #6 GCCAAT • Index #12 CTTGTA Pool of 3 samples: • Index #4 TGACCA • Index #6 GCCAAT • Index #12 CTTGTA Pool of 6 samples: • Index #2 CGATGT • Index #4 TGACCA • Index #5 ACAGTG • Index #6 GCCAAT • Index #7 CAGATC • Index #12 CTTGTA
+
+
 [Detailed info about small RNA primers used by illumina (and adopted by zymo in this kit) on pg 32](https://support.illumina.com/content/dam/illumina-support/documents/documentation/chemistry_documentation/experiment-design/illumina-adapter-sequences-1000000002694-11.pdf)
 
 RNA PCR Primer(RP1)  
