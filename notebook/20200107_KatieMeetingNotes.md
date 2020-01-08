@@ -1,6 +1,6 @@
 # Notes from meeting with Katie 
 
-## Steps for prepping LC18 (2018OAExp_larvae) samples for sequencing
+We discussed in this meeting **steps for prepping LC18 (2018OAExp_larvae) samples for sequencing**
 
 ### Step 1 Confirmation of samples
 * Determine # of **zygote** and **larvae** samples
