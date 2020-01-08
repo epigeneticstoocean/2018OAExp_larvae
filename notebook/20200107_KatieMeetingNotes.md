@@ -3,7 +3,12 @@
 ## Steps for prepping LC18 (2018OAExp_larvae) samples for sequencing
 
 ### Step 1 Confirmation of samples
-* Determine **# of zar
+* Determine # of **zygote** and **larvae** samples
+* Practice extractions on block 3 zygotes (happening this Friday)
+  * Test on Omega Blood and Tissue Kits
+  * IF available also try Omega mollusc (expired) and kit jon used (if available)
+* How many viable samples are we able to extract?
+* Decide best on available samples which samples we will focus on
 
 ### Step 2 Barcoding and Sequencing Plan
 * Figure out the barcode design
