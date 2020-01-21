@@ -3,7 +3,7 @@
 
 ## Things to remember for their visit
  * Samples from Block 1
-   * We have 16 female and 5 male tissues 
+   * We have 16 female and 5 male gonads and gametes
       * Male sperm were sent to Yaamini
    * We have at most 65 zygote and larvae samples, some of these (up to 16) may have been combined, need to check notes
       * If we go NovaSeq S4 (based on offer) we could sequence all samples with >25 coverage. [Link to calculation](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20191112_illuminaCostCalSummary.md)
