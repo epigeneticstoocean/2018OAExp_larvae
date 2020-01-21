@@ -22,7 +22,25 @@
 
 ## Brief list of things to discuss
   * Discuss the duel index primer design. Ask if there are anything things we should be aware of when ordering the oligos.
+    * **Response**: Duel or single index designs should work.
   * Discuss the number of samples (based on numbers above) we could sequence and pricing across various platforms
   * Ask if they have any thoughts on size selection post PCR.
+    * **Response**: They usually do not do a size selection or clean up after PCR, but do a sonication post BS conversion. (They will be confirming this since it is different that other ways I've seen this done).
+
+## Other thoughts from GENEWIZ meeting
+
+Using Psi-X additative
+  * Suggested adding some amount of Psi-X (10%?) in order to boost sequence diversity so we don't blind the machine. This can be a potential problem with BS conversion where % methylation is quite high. This may not be an issue with oysters since methylation is quite low and sequence diversity is high.
+  * Need to follow up with Stevens group to confirm this isn't an issue.
+  * Duel index design (assuming design for illumina platform is good) should work.
   
-## Thoughts from GENEWIZ meeting
+They suggested maybe using a lane of hiSeq 3000 to evaluate the Psi-X % spike in. Or if we do the 78 sample pool (across 2 lane) design
+
+## Basic Pricing Quotes (not official)
+
+| Platform | Price per lane | Turn around |
+|:--------:|:--------------:|:-----------:|
+| HiSeq 3000 | $1600 |  ~10 days |
+| NovaSe1 S4 | $6800 | 8 days |
+
+* This would allow us to do x2 lanes of NovaSeq S4 (~30-35 samples per lane) and potentially a HiSeq intially as a check.
