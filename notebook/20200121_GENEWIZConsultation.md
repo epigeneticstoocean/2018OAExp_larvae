@@ -2,6 +2,13 @@
 
 
 ## Things to remember for their visit
+ * Samples
+   * We have 8 female and 8 male tissues (16), 3x8 (24 zygotes + 24 larvae): 16+48 = 64 (maximum).
+ * Pico Methylation Kit
+   * BS conversino digestion performs DNA cutting (no sonication)
+   * PBAT approach for BS conversion (adapters after conversion)
+   * Two PCR steps (first gets dsDNA fragments and second adds the primer w/ indexes)
+   * No current post PCR or quantificaiton steps **question for GENEWIZ reps**.
  * Single vs. Duel Indexes
     * **Thought One from Zymo rep**: You can sequence up to 96 samples as long as the sequencer output is enough for the genome size you’re working with. We do not sell additional primers, but you can order them from your favorite custom oligo vendor. Each index primer set in the Pico Methyl-Seq Library Prep kit is composed of two primers, P5 and P7, at a concentration of 10 uM. The index primers that are included in the Pico Methyl-Seq kit are based off of the Illumina TruSeq index primers (dashes are the 6-nucleotide barcode sequence, which is only on the P7). You can order the primers from your favorite oligo vendor. The primers do not need to be specially purified – we use standard desalting.
       * P7: 5’-CAAGCAGAAGACGGCATACGAGAT------GTGACTGGAGTTCAGACGTGTG-3’
@@ -14,3 +21,5 @@
   * Discuss the duel index primer design. Ask if there are anything things we should be aware of when ordering the oligos.
   * Discuss the number of samples (based on numbers above) we could sequence and pricing across various platforms
   * Ask if they have any thoughts on size selection post PCR.
+  
+## Thoughts from GENEWIZ meeting
