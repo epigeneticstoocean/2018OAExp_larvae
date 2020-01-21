@@ -4,6 +4,7 @@
 ## Things to remember for their visit
  * Samples
    * We have 8 female and 8 male tissues (16), 3x8 (24 zygotes + 24 larvae): 16+48 = 64 (maximum).
+      * If we go NovaSeq S4 (based on offer) we could sequence all samples with >25 coverage. [Link to calculation](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20191112_illuminaCostCalSummary.md)
  * Pico Methylation Kit
    * BS conversino digestion performs DNA cutting (no sonication)
    * PBAT approach for BS conversion (adapters after conversion)
