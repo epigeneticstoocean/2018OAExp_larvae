@@ -12,7 +12,7 @@ P5: 5’-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTT-3’
 
 Alternative P5 suggested by Zymo rep:  
     5'-AATGATACGGCGACCACCGAGATCTACAC**BBBBBB**ACACTCTTTCCCTACACGAC-3'
-
+       AATGATACGGCGACCACCGAGATCTACAC              TCTTTCCCTACACGACGCTCTTCCGATCT
 The barcode numbers they provide match up with the illumina barcodes, but the sequence itself is slightly different.
 
 **Notes from the Zymo Rep**
@@ -59,12 +59,10 @@ i5_PCRprimer_L11_AGTCTGTG
 i5_PCRprimer_L12_AAGTGTCG  
 
 Example of P7 primer: 
-      5'-CAAGCAGAAGACGGCATACGAGAT**CGTGATGT**{GT}GACTGGAGTTCAGACGTGTG**C**-3'  
+      5'-CAAGCAGAAGACGGCATACGAGAT**CGTGAT**GTGACTGGAGTTCAGACGTGTG**C**-3'  
 
 Difference from Zymo optios:  
-    * Uses an 8 base barcode  
     * Contains additional 1 base on 3 primer end 
-    * Missing 2 bases immediately next to the index (in curly brackets) compared to Zymo P7 primer
     
 We have 12 different P7 barcodes of these:  
 PCR2_01_ATCACG  
@@ -79,3 +77,12 @@ PCR2_09_GATCAG
 PCR2_10_TAGCTT  
 PCR2_11_GGCTAC  
 PCR2_12_CTTGTA  
+
+**Main Differences from the Zymo design to our design**
+* The P5 primer has some extra sequence in our primer and uses an 8 base index.
+* The P7 primer appears to have an extra C on the 3' end compared to the zymo kit.
+
+I will be checking to see if either of these modifications would impact amplification or sequencing.
+
+**Plan for indexes**
+    * It seems that we might be able to use the P7 primers we already have (given us up to 12 options), but may need to order another 12 P7 primers of the same design at those used by Zymo.
