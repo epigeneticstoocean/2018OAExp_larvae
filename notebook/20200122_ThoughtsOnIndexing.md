@@ -44,7 +44,7 @@ Example of P5 primer:
     * Uses an 8 base barcode  
     * Contains additional 13 bases on 3 primer end  
  
-We have 12 different P5 barcodes of these:
+We have 12 different P5 barcodes of these:  
 i5_PCRprimer_L1_D501_AGGCTATA  
 i5_PCRprimer_L2_D502_GCCTCTAT  
 i5_PCRprimer_L3_D503_AGGATAGG  
