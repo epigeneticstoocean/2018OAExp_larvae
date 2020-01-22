@@ -8,3 +8,4 @@
 4) [20200107_KatieMeetingNotes](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200107_KatieMeetingNotes.md) : Discussed updated plan for figuring out which samples to focus on and the steps for getting started with the library prep and sequencing.
 5) [20200121_GENEWIZConsultation](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200121_GENEWIZConsultation.md) :  Notes from GENEWIZ meeting.
 6) [20200122_programList](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200122_programList.md) : Running list of new programs I could potentially use for analysis
+7 [20200122_ThoughtsOnIndexing](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200122_ThoughtsOnIndexing.md) : Short overview of indexes used by Zymo in Pico MEthylation Kit compared to the ones we currently have in stock. Also includes notes from Zymo rep about making our own primers.
