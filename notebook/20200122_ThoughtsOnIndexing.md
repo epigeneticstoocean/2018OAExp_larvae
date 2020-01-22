@@ -10,7 +10,7 @@ P7: 5’-CAAGCAGAAGACGGCATACGAGAT**BBBBBB**GTGACTGGAGTTCAGACGTGTG-3’
 
 P5: 5’-AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTT-3’
 
-Alternative P5 suggested by Zymo rep:  
+Alternative P5 suggested by Zymo rep (this would allow us to duel index):  
     5'-AATGATACGGCGACCACCGAGATCTACAC**BBBBBB**ACACTCTTTCCCTACACGAC-3'  
     
 The barcode numbers they provide match up with the illumina barcodes, but the sequence itself is slightly different.
