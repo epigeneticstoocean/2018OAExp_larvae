@@ -19,4 +19,7 @@ You can sequence up to 96 samples as long as the sequencer output is enough for 
 
 **It is up to you whether you want to use the full barcode (8 bases listed above) or use only the first 6 bases**. Just make sure that you input the correct sequence for demultiplexing in the sample sheet. An alternative would be to use the IDT for Illumina TruSeq UD Indexes.
 
-[]()
+**8 base Index list from Illumina for i5 primers**
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/img/image008.png)
+
+
