@@ -51,7 +51,7 @@ i5_PCRprimer_L3_D503_AGGATAGG
 i5_PCRprimer_L4_D504_TCAGAGCC  
 i5_PCRprimer_L5_D505_CTTCGCCT  
 i5_PCRprimer_L6_D506_TAAGATTA  
-i5_PCRprimer_L7_D507_ACGTCCTG  
+i5_PCRprimer_L7_D507_ACGTCCTG 
 i5_PCRprimer_L8_D508_GTCAGTAC  
 i5_PCRprimer_L9_TTGTCGGT  
 i5_PCRprimer_L10_TTGCCACT  
@@ -60,8 +60,13 @@ i5_PCRprimer_L12_AAGTGTCG
 
 
 Example of P7 primer: 
-      5'-CAAGCAGAAGACGGCATACGAGAT**CGTGATGT**GACTGGAGTTCAGACGTGTGC**-3'  
-      
+      5'-CAAGCAGAAGACGGCATACGAGAT**CGTGATGT**{GT}GACTGGAGTTCAGACGTGTG**C**-3'  
+
+ Difference from Zymo optios:  
+    * Uses an 8 base barcode  
+    * Contains additional 1 base on 3 primer end 
+    * Missing 2 bases immediately next to the index (in curly brackets) compared to Zymo P7 primer
+    
 We have 12 different P7 barcodes of these:  
 PCR2_01_ATCACG  
 PCR2_02_CGATGT  
