@@ -1,13 +1,24 @@
 # List of all reagents that need to be ordered to complete larvae DNA methylation sequencing project
 
+Based on prepping up to 75 samples for sequencing
+
 ## Universal reagents
+
  * Filtered Tips
+    * [Website](https://www.fishersci.com/shop/products/fisherbrand-sureone-aerosol-barrier-pipette-tips-14/p-161515)
     * 10 uL
-      * ORDER : 
-    * 200 uL
-      * ORDER : 
+      * ORDER : x1 Pack (960)
+      * DETAILS : Fisher Scientific - 02-707-432 
+      * Cost : 126$
+    * 100 uL
+      * ORDER : x1 Pack (960)
+      * DETAILS : Fisher Scientific - 02-707-431 
+      * Cost : 126$
     * 1000 uL
-      * ORDER : 
+      * ORDER : x1 Pack (960)
+      * DETAILS : Fisher Scientific - 02-707-404 
+      * Cost : 126$
+      
  * Qubit (HS) Reagents
     * ORDER : x 1 100 Assay 
     * DETAILS : Thermo Fisher - Q33230
@@ -21,6 +32,8 @@
   * Pico Methylation Kit
       * **IN STOCK** : x2 (50 preps)
       * **ORDER**    : x1 (+25 preps) 
+      * COST : $1360
+      * [Website](https://www.zymoresearch.com/products/pico-methyl-seq-library-prep-kit)
   * Sonication Reagents (1 per sample)
     * ORDER : Enough for ~75 samples
   * Indexes
