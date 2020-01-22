@@ -37,11 +37,12 @@ P5 : 5'-AATGATACGGCGACCACCGAGATCTACAC[i5]TCGTCGGCAGCGTC-3'
 
 [LINK](https://docs.google.com/spreadsheets/d/1chXHQN3bYWArrUJmSRBO9Q_H8i_63yZAIdsu1xE6KHc/edit#gid=917843354)
 
-Example of P5 primer:
-       5'-AATGATACGGCGACCACCGAGATCTACAC**TATAGCCT**ACACTCTTTCCCTACACGAC**GCTCTTCCGATCT**-3'
- Difference from Zymo optios:
- * Uses an 8 base barcode
- * Contains additional 13 bases on 3 primer end
+Example of P5 primer:  
+       5'-AATGATACGGCGACCACCGAGATCTACAC**TATAGCCT**ACACTCTTTCCCTACACGAC**GCTCTTCCGATCT**-3'  
+       
+ Difference from Zymo optios:  
+    * Uses an 8 base barcode  
+    * Contains additional 13 bases on 3 primer end  
  
 We have 12 different P5 barcodes of these:
 i5_PCRprimer_L1_D501_AGGCTATA  
