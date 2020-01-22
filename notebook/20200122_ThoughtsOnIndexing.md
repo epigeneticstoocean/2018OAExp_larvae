@@ -84,5 +84,5 @@ PCR2_12_CTTGTA
 
 I will be checking to see if either of these modifications would impact amplification or sequencing.
 
-**Plan for indexes**
+**Plan for indexes**  
     * It seems that we might be able to use the P7 primers we already have (given us up to 12 options), but may need to order another 12 P7 primers of the same design at those used by Zymo.
