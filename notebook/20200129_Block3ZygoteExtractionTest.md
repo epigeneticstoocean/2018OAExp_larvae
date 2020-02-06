@@ -2,6 +2,8 @@
 
 I performed a preliminary test using the protocol provided by Matt Hare ([link to protocol](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/protocols/hare_larvaeExtractionProtocol.md)) using zygotes collected from control samples during block 3 (`CF03 x CM03`). 
 
+**PAGE 3 and 4 of lab manual**
+
 ## Major Steps
 
 * I first submerged the zygote filter in 95% EtoH contained in a 250mL beaker to check if I could see any zygotes under a microscope. I was able to observed several clumps of zygotes, but it was difficult to count how many.
@@ -22,3 +24,5 @@ I performed a preliminary test using the protocol provided by Matt Hare ([link t
       * Option 2: Could be a reagent issue. I will need to double check stocks and maybe prep a proven tissue sample using this method as a positive control.
       
  2) Quantification
+   * Ran sample on Qubit HS DNA
+      * Final Conc. 4.29 ng/ul
