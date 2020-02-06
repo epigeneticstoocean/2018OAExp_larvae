@@ -11,4 +11,5 @@
 7) [20200122_orderList](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200122_orderList.md) : List of items to be ordered for prepping samples for sequencing.
 8) [20200122_ThoughtsOnIndexing](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200122_ThoughtsOnIndexing.md) : Short overview of indexes used by Zymo in Pico MEthylation Kit compared to the ones we currently have in stock. Also includes notes from Zymo rep about making our own primers.
 8) [20200129_Block3ZygoteExtractionTest](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200129_Block3ZygoteExtractionTest.md) : Tested out hare et al protocol on block 3 zygote samples.
-9) []() : Tested out the extraction again using mantle samples form L16 individuals and larvae from 1-L larvae exposure experiment.
+9) [20200206_testLarvaeExtraction2](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200206_testLarvaeExtraction2.md) : Tested out the extraction again using mantle samples form L16 individuals and larvae from 1-L larvae exposure experiment.
+
