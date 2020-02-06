@@ -25,4 +25,4 @@ I performed a preliminary test using the protocol provided by Matt Hare ([link t
       
  2) Quantification
    * Ran sample on Qubit HS DNA
-      * Final Conc. 4.29 ng/ul
+      * Final Conc. 42.9 ng/ul
