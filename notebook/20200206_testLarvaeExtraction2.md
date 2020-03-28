@@ -1,13 +1,13 @@
 ## Extraction Test
 
-I performed a preliminary test using the protocol provided by Matt Hare ([link to protocol](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/protocols/hare_larvaeExtractionProtocol.md)) using **adult mantle** tissue from the L16 experiment (081 RNA Mantle 080116) and **larvae** from the failed 1-L larval cross experiemtn (J509).
+I performed a preliminary test using the protocol provided by Hare Lab ([link to protocol](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/protocols/hare_larvaeExtractionProtocol.md)) using **adult mantle** tissue from the L16 experiment (081 RNA Mantle 080116) and **larvae** from the failed 1-L larval cross experiment (J509).
 
 **PAGE 6 and 7 of lab manual**
 
 ## Extraction Protocol
 
 * Followed standard protocol instructions (details in notebook)  
-* Used 1000uL lysing buffer/protk for my blank and larvae sampels (not the mantle samples) so I ended up spliting the volumes after an overnight digestion in and A and B tube. I needed to do this to accomodate the two volumes of EtOH for the initial wash.
+* Used 1000uL lysing buffer/prot k for my blank and larvae sampels (not the mantle samples) so I ended up spliting the volumes after an overnight digestion in and A and B tube. I needed to do this to accomodate the two volumes of EtOH for the initial wash.
 
 ## Results
 
