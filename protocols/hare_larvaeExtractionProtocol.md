@@ -1,4 +1,4 @@
-# Larval extraction
+# Hare lab larval extraction protocol - Based on Sawada et al. 2008
 
 ### Description
 This protocol is for extraction from individual larvae (or small groups of larvae) for the purposes of Next-generation sequencing (NGS). One big factor in determining how many larvae to use per extraction is larval size. This protocol has been used with 7-day-old and 20-day-old oyster larvae (ethanol preserved). If extra larvae are available, it is highly recommended to do test extractions with a variety of numbers of larvae in order to determine how many will be needed.
