@@ -36,4 +36,4 @@ I performed a preliminary test using the protocol provided by the Hare Lab ([lin
   
 Calculated out 20ng of DNA for each sample (zygote sample from previous extraction, larvae A, mantle A) to make sure there was equal quantity among samples. Found that both zygote and larvae had large DNA fragment (>1200bp), while the mantle tissue sample didn't seem to work as well (low fragment size) and the blank didn't show up at all. This confirms that while there are residual salts in the final extraction solution they don't appear to be impacting the quantification.
 
-
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/20200207_testExtraction2Gel.jpg)
