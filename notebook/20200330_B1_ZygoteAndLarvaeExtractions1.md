@@ -1,17 +1,43 @@
 # DNA extraction for B1 zygote and larvae (partial)
 
-**Additional notes found in L18 labnotebook on pages 12-15.**
+**Additional notes found in L18 labnotebook on pages 12-16.**
 
 ### Samples 
 
-* Zygotes
-  * XX
-  * XX
-  * XX
-  * (Will fill these in once back in the lab)
-* Larvae 
-  * XX
-  * (Will fill these in once back in the lab)
+Zygotes (B2 pg 12)
+  1) EF05 x EM05 B2
+  2) EF07 x EM02 B2
+  3) EF04 x EM04 B2
+  4) CF03 x CM03 B2
+  5) CF01 x CM01 B2
+  6) EF08 x EM03 B2
+  7) EF02 x EM02 B2
+  8) CF02 x CM02 B2
+  
+Zygotes (B1 pg 13)
+  1) EF03 x EM03 B1
+  2) CF02 x CM02 B1
+  3) EF08 x EM02 B1
+  4) EF02 x EM02 B1
+  5) EF05 x EM05 B1
+  6) EF01 x EM01 B1
+  7) EF04 x EM04 B1
+  8) CF03 x CM03 B1
+  9) EF06 x EM06 B1
+  10) CF08 x CM03 B1
+  11) CF05 x CM05 B1
+  12) CF06 x CM01 B1
+  13) CF01 x CM01 B1
+  14) CF04 x CM04 B1
+  
+Larvae (B1 pg 14)
+  1) CF07 x CM04 B1
+  2) EF05 x EM06 B1
+  3) EF05 x EM01 B1
+  4) CF05 x CM01 B1
+  5) EF03 x EM04 B1
+  6) EF04 x EM06 B1
+  7) EF06 x EM01 B1
   
  ### Protocol
   
