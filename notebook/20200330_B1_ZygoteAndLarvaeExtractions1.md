@@ -59,21 +59,84 @@ Larvae (B1 pg 14)
   * I used 30uL of TRIS HCl to elute the DNA for each tube (60uL of solution for each sample)
   * I transferred the elution solution from replicate tubes into a final centrifuge tube for final use and storage. I also kept the original tubes which tended to contain additional material at the bottom which I believe is mostly salt. However, in the event that this also contains some DNA from the samples I kept those vial in the -80.
   
-### Results 
+## Results 
 
-**Qubit DNA Quantification (TO DO)**
+### Qubit DNA Quantification
 
-B1 zygote
-* S1,S2
+* Used Qubit HS 1X kit and Qubit 3.0
 
-B1 larvae
+**B2 Zygotes (pg 12)**
 
-**Gel Images**
+| Sample | Conc. |
+|:------:|:-----:|
+| 1A | 24.8 |
+| 1B | 9.82 | 
+| 2A | 15.2 | 
+| 2B | 7.88 | 
+| 3A | 50.4 | 
+| 3B | 25.8 | 
+| 4A | 12.6 | 
+| 4B | 14.0 | 
+| 5A | 54.0 | 
+| 5B | 23.0 |
+| 6A | 63.8 |
+| 6B | 35.4 |
+| 7A | 23.4 |
+| 7B | 14.9 |
+| 8A | 9.82 |
+| 8B | 8.82 |
+| Blank | TOO LOW |
 
-B1 Zygote
+
+**B1 zygote (pg 13)**
+
+| Sample | Conc. |
+|:------:|:-----:|
+| 1 | 17.9 |
+| 2 | 15.7 | 
+| 3 | 19.6 | 
+| 4 | 32.6 | 
+| 5 | 33.4 | 
+| 6 | 9.06 | 
+| 7 | 27.8 | 
+| 8 | 46.6 | 
+| 9 | 17.0 | 
+| 10 | 20.0 |
+| 11 | 25.0 |
+| 12 | 26.0 |
+| 13 | 47.6 |
+| 14 | 31.0 |
+| Blank | TOO LOW |
+
+**B1 larvae**
+
+| Sample | Conc. |
+|:------:|:-----:|
+| 1 | 3.88 |
+| 2 | 2.36 | 
+| 3 | 48.4 | 
+| 4 | 2.38 | 
+| 5 | 15.7 | 
+| 6 | 0.620 | 
+| 7 | 5.40 | 
+| 8 | 10.4 | 
+| Blank | TOO LOW |
+
+### Gel Images
+
+**B2 Zygote**
+* 2% Gel
+
+![]()
+
+**B1 Zygote**
+* 2% Gel
+
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/2020-04-1_DNAE_Zygote_L18_Block1(1).jpg)
 
-B1 Larvae and additional reruns
+**B1 Larvae and additional reruns**
+* 1.5% Gel
+
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/2020-04-2_DNAE_Larvae_L18_Block1withreruns.jpg)
 
 ### Synopsis
