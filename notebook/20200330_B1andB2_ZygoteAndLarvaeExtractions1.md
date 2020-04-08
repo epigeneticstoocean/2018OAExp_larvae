@@ -1,4 +1,4 @@
-# DNA extraction for B1 zygote and larvae (partial)
+# DNA extraction for B1 + B2 zygote and larvae (partial)
 
 **Additional notes found in L18 labnotebook on pages 12-16.**
 
@@ -127,17 +127,17 @@ Larvae (B1 pg 14)
 **B2 Zygote**
 * 2% Gel
 
-![]()
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg15_B2Zygote.jpg)
 
 **B1 Zygote**
 * 2% Gel
 
-![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/2020-04-1_DNAE_Zygote_L18_Block1(1).jpg)
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg15_B1Zygote.jpg)
 
 **B1 Larvae and additional reruns**
 * 1.5% Gel
 
-![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/2020-04-2_DNAE_Larvae_L18_Block1withreruns.jpg)
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg16_B1Larvae.jpg)
 
 ### Synopsis
 
