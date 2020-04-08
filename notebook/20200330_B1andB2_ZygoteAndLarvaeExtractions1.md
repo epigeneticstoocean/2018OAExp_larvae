@@ -141,5 +141,5 @@ Larvae (B1 pg 14)
 
 ### Synopsis
 
-* Looks like we have a viable amount of DNA from all the samples, even the larvae, for the type of library kit we are using.
-* The larvae dna in particular looked like good quality. However, many of the zygote samples appear to be of somewhat degraded quality (no clear large fragment band on the gels). My next step will be to explore whether trying to resuspend / elute the residual salt precipitate from the extraction will yield additional high quality DNA.
+* Looks like we have a viable amount of DNA from all the samples, even the larvae, for the type of library kit we are using (i.e. > 20ng).
+* The larvae dna in particular looks like good quality. However, many of the zygote samples appear to be of somewhat degraded quality (no clear large fragment band on the gels). My next step will be to explore whether trying to resuspend / elute the residual salt precipitate from the extraction will yield additional high quality DNA.
