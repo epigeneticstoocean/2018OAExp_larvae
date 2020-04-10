@@ -4,7 +4,8 @@
 
 ### Samples 
 
-Zygotes (B2 pg 12)
+**Zygotes (B2 pg 12)**
+
   1) EF05 x EM05 B2
   2) EF07 x EM02 B2
   3) EF04 x EM04 B2
@@ -14,7 +15,8 @@ Zygotes (B2 pg 12)
   7) EF02 x EM02 B2
   8) CF02 x CM02 B2
   
-Zygotes (B1 pg 13)
+**Zygotes (B1 pg 13)**
+
   1) EF03 x EM03 B1
   2) CF02 x CM02 B1
   3) EF08 x EM02 B1
@@ -30,7 +32,8 @@ Zygotes (B1 pg 13)
   13) CF01 x CM01 B1
   14) CF04 x CM04 B1
   
-Larvae (B1 pg 14)
+**Larvae (B1 pg 14)**
+
   1) CF07 x CM04 B1
   2) EF05 x EM06 B1
   3) EF05 x EM01 B1
