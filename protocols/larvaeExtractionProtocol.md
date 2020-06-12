@@ -22,8 +22,24 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 
 1) **Larval/Zygote filter paper removal**  
 
-XX
+**Setup**  
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol1.jpg)
 
+**Filter**  
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol2.jpg)
+
+**Rinse Filter (70% EtOH)**  
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol4.jpg)
+
+**Cut Filter**  
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol3.jpg)
+
+**Remove Filter and dry**  
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol5.jpg)
+
+**Place filter in tube**  
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol5.jpg)
+  
 2) **Lysis and Digestion**  
 This protocol was modified from Sawada et al 2008.  
 
