@@ -1,9 +1,9 @@
 # Extraction Protocol
 
-### Description
+## Description
 Protocol for extracting oyster larvae and zygote samples that have been stored on filter paper. Protocol is based on a Sawada et al 2008 protocol, which has been modified by the Hare lab group.  
 
-### Reagents
+## Reagents
 
 |Reagent|Amount (per sample)|
 |:-----:|:----:|
@@ -17,10 +17,21 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 **Other Items**
 * 1.5 mL centrifuge tubes (x3)
 * 10,200,1000 uL pipet tips
+* Scapel
+* Fine tip tweezers
 
-### Steps
+## Steps
 
-1) **Larval/Zygote filter paper removal**  
+### 1) **Larval/Zygote filter paper removal**  
+
+    a) Setup space (picture below).
+    b) Add 800 uL of digestion buffer and 180 uL molecular grade water to each centrifuge tube (one for each sample).
+    b) Gently remove filter from whirlpack. Larvae are on the filter, so handle it with care as you remove it from the whirlpack.
+    c) Make sure the filter is sample side up and rinse with 70% EtOH (I use a squeeze bottle for this). Rinsing the filter over the beaker. Make sure you rinse off any salt, then rinse the edge of the filter to push the larvae towards the center of the filter (not all larvae will move).  
+    d) Let the filter air dry for 1-3 minutes. The filter paper should NOT have any standing EtOH, but should look slightly (wet). I do no wait for the paper to completely dry.  
+    e) Use a sterile scapel to remove the filter paper from the plastic frame. I usually do this be holding the scapel in place and rotating the filter to cut the paper. I then use the tweezers to transfer the filter paper to the centrifuge tubes.
+    f) Add 20 uL Prot K.
+    g) Invert tubes several times and ensure the filter paper is completely submerged in the digestion solution and then digest over night (40C, 1000 rpm).
 
 **Setup**  
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol1.jpg)
@@ -40,7 +51,7 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 **Place filter in tube**  
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol5.jpg)
   
-2) **Lysis and Digestion**  
+### 2) **Lysis and Digestion**  
 This protocol was modified from Sawada et al 2008.  
 
     a) Combine 800 uL digestion buffer and 180 uL molecular grade H20 in 1.5 mL tube. 
@@ -51,7 +62,7 @@ This protocol was modified from Sawada et al 2008.
 
 **Notes**: Shells may remain. Shells will often also stay partially closed for extended periods of time, so overnight digestion is often necessary.  
 
-3) **Purification**  
+### 3) **Purification**  
 
 Ethanol precipitation.  
 
@@ -68,7 +79,7 @@ Ethanol precipitation.
     i) Air dry the pellet until all liquid has just disappeared, usually 5-10 minutes.
     j) Resuspend in an appropriate volume of water or (ideally) of Tris HCl pH 7.5-8.
 
-4) **Results**
+### 4) **Results**
   
 **Quantification**  
 * Used Qubit HS to quantify samples. This approach generally leads to small quantities, which can only be quantified on HS kits.  
