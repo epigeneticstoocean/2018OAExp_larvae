@@ -26,12 +26,12 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 
     a) Setup space (picture below).
     b) Add 800 uL of digestion buffer and 180 uL molecular grade water to each centrifuge tube (one for each sample).
-    b) Gently remove filter from whirlpack. Larvae are on the filter, so handle it with care as you remove it from the whirlpack.
-    c) Make sure the filter is sample side up and rinse with 70% EtOH (I use a squeeze bottle for this). Rinsing the filter over the beaker. Make sure you rinse off any salt, then rinse the edge of the filter to push the larvae towards the center of the filter (not all larvae will move).  
-    d) Let the filter air dry for 1-3 minutes. The filter paper should NOT have any standing EtOH, but should look slightly (wet). I do no wait for the paper to completely dry.  
-    e) Use a sterile scapel to remove the filter paper from the plastic frame. I usually do this be holding the scapel in place and rotating the filter to cut the paper. I then use the tweezers to transfer the filter paper to the centrifuge tubes.
-    f) Add 20 uL Prot K.
-    g) Invert tubes several times and ensure the filter paper is completely submerged in the digestion solution and then digest over night (40C, 1000 rpm).
+    c) Gently remove filter from whirlpack. Larvae are on the filter, so handle it with care as you remove it from the whirlpack.
+    d) Make sure the filter is sample side up and rinse with 70% EtOH (I use a squeeze bottle for this). Rinsing the filter over the beaker. Make sure you rinse off any salt, then rinse the edge of the filter to push the larvae towards the center of the filter (not all larvae will move).  
+    e) Let the filter air dry for 1-3 minutes. The filter paper should NOT have any standing EtOH, but should look slightly (wet). I do no wait for the paper to completely dry.  
+    f) Use a sterile scapel to remove the filter paper from the plastic frame. I usually do this be holding the scapel in place and rotating the filter to cut the paper. I then use the tweezers to transfer the filter paper to the centrifuge tubes.
+    g) Add 20 uL Prot K.
+    h) Invert tubes several times and ensure the filter paper is completely submerged in the digestion solution and then digest over night (40C, 1000 rpm).
 
 **Setup**  
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol1.jpg)
