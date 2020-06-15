@@ -49,7 +49,7 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol5.jpg)
 
 **Place filter in tube**  
-![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol5.jpg)
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/larveExtractionProtocol6.jpg)
   
 ### 2) **Lysis and Digestion**  
 This protocol was modified from Sawada et al 2008.  
