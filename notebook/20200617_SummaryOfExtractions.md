@@ -3,10 +3,6 @@
 ## Description
  Using a modified version of the Sawada / Hare et al protocol I extracted all filtered larvae and zygote samples from block 1. This included XX zygote samples and XX larvae samples. Samples were stored in approximately 60ul of TRIS HCL buffered solution and placed in the -80 for long term storage.
 
-
-[**Link to google sheets larvae data**](https://docs.google.com/spreadsheets/d/1l4f2s0nbyNUgenjXhhB8-FzqPRpRpzZvG_iymL_z-WM/edit#gid=351839693)
-
-
 ## Table of Data
 
 | Sample | Stage | Extraction | Conc. | Appoximate Volume Remaining | Additional Notes |
