@@ -146,3 +146,20 @@
 
 * Looks like we have a viable amount of DNA from all the samples, even the larvae, for the type of library kit we are using (i.e. > 20ng).
 * The larvae dna in particular looks like good quality. However, many of the zygote samples appear to be of somewhat degraded quality (no clear large fragment band on the gels). My next step will be to explore whether trying to resuspend / elute the residual salt precipitate from the extraction will yield additional high quality DNA.
+
+## Lab notebook images
+
+### Page 12
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg12_2020Mar30_LabNotebook.jpg)
+
+### Page 13
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg13_2020Mar30_LabNotebook.jpg)
+
+### Page 14
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg14_2020Apr01_LabNotebook.jpg)
+
+### Page 15
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg15_2020Apr02_LabNotebook.jpg)
+
+### Page 16
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg16_2020Apr02_LabNotebook.jpg)
