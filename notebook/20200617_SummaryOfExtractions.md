@@ -1,7 +1,7 @@
 # Summary of Larvae and Zygote Extractions
 
 ## Description
- Using a modified version of the Sawada / Hare et al protocol I extracted all filtered larvae and zygote samples from block 1. This included XX zygote samples and XX larvae samples. Samples were stored in approximately 60ul of TRIS HCL buffered solution and placed in the -80 for long term storage.
+ Using a modified version of the Sawada / Hare et al protocol I extracted all filtered larvae and zygote samples from block 1. This included zygote samples and larvae samples. Samples were stored in approximately 60ul of TRIS HCL buffered solution and placed in the -80 for long term storage.
 
 ## Table of Data
 
