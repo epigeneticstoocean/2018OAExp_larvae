@@ -8,10 +8,10 @@ All samples (adult mantle, larvae, zygotes) have been extracted.
 Here are the tables showing which samples we have viable DNA for either larvae or zygotes. 
 
 **Zygotes**
-[]()
+![]()
 
 **Larvae**
-[]()
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/img/ValidLarvaeExtraction.png)
 
 
 This means there will be :
