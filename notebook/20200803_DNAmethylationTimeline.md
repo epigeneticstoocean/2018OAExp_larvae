@@ -41,4 +41,4 @@ Using adapters we have I can do a unique combinatorial index design, this should
 
 ### Timeline
 
-I plan on processing samples in of ten (this is makes sense since pico methylation kit has digestion tubes aliquots in samples of 10). I budget 3 days per batch of ten, including library quantification at the end. This will mean 15 days to process 50 samples plus another 3 days (total of 18 days) to finish the remaining 3 samples and any samples that may have failed during the initial library prep. Working 6 days a week this should be done within 3 weeks. Tentative start date: Aug 24th.
+I plan on processing samples in groups of ten (this makes sense since pico methylation kit has digestion tube aliquots also in batches of 10 samples). I budget 3 days per batch of ten, including library quantification at the end. This will mean 15 days to process 50 samples plus another 3 days (total of 18 days) to finish the remaining 3 samples and any samples that may have failed during the initial library prep. Working 6 days a week this should be done within 3 weeks. Tentative start date: Aug 24th.
