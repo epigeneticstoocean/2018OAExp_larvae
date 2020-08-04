@@ -8,7 +8,7 @@ All samples (adult mantle, larvae, zygotes) have been extracted.
 Here are the tables showing which samples we have viable DNA for either larvae or zygotes. 
 
 **Zygotes**
-![]()
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/img/ValidZygoteExtraction.png)
 
 **Larvae**
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/img/ValidLarvaeExtraction.png)
@@ -40,8 +40,3 @@ Using adapters we have I decided on a unique combinatorial index design [(illumi
 ### Timeline
 
 Since the pico methylation kit has digestion tubes aliquots in samples of 10. I plan on processing samples in similar batches of ten. I budget 3 days per batch of ten, including library quantification at the end. This will mean 15 days to process 50 samples plus another 3 days (total of 18 days) to finish the remaining 3 samples and any samples that may have failed during the initial library prep. Working 6 days a week this should be done within 3 weeks. Tentative start date: Aug 24th.
-
-
-
-
-
