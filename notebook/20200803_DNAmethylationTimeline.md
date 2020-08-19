@@ -1,5 +1,7 @@
 # Remaining DNA methylation lab work - Aug 3 2020
 
+[Link to presentation](https://docs.google.com/presentation/d/1IQWAnoi1YssHaI2vJz7E7c1psV4i2_fIw1D0lVJkgSI/edit#slide=id.g912977024d_0_19)
+
 ## Done
 
 1) Sample extraction:
