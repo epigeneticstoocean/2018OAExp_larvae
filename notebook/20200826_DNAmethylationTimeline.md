@@ -37,6 +37,8 @@ This will give us > 25x coverage for all samples even with 10x duplication error
 
 **Plan** Lib. prep using duel index design with previously designed index (confirmed with genewiz this shouldn't be a problem). I will do BS conversion / library prep on all 53 samples. 
 
+* Use 1% unmethylated lambda phage DNA in each library sample prep (i.e. 1ng lambda for 100ng sample)
+
 Using adapters we have I can do a unique combinatorial index design, this should help with the [index hopping issue](https://support.illumina.com/bulletins/2017/08/recommended-strategies-for-unique-dual-index-designs.html)
 
 [Additional info here](https://www.illumina.com/content/dam/illumina-marketing/documents/products/whitepapers/index-hopping-white-paper-770-2017-004.pdf)
