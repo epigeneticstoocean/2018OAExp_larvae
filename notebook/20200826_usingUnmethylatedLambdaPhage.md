@@ -8,5 +8,6 @@
  * Map lambda phage to phage genome.
  * Estimate number of methylated cytosines vs. unmethylated cytosines (from bismark) to determine BS conversion efficiency.
 
-[**Holly putname / Steven roberts thread on lambda phage and PSI X"](https://github.com/RobertsLab/resources/issues/753)
+[**Holly Putnam / Steven Roberts thread on lambda phage and PSI X"](https://github.com/RobertsLab/resources/issues/753)  
+
 [**Biostars thoughts on using lambda phage**](https://www.biostars.org/p/151034/)
