@@ -12,7 +12,7 @@
 3 - 5'- AATGATACGGCGACCACCGAGATCTACACBBBBBBXXACACTCTTTCCCTACACGAC-3'  
 ```
 
-**B** = Barcode (6 base)
-**X** = Sequence not a part of oligo (added to help oligos align
+**B** = Barcode (6 base)  
+**X** = Sequence not a part of oligo (added to help oligos align)
 
 The main difference between the zymo primer (and suggested custom primer) our primer appears to be the addition of `CCGATCT` at the 3' side of the oligo. Original i didn't think this would make much of an impact on amplification success, but given that our library prep didn't work with our custom p5 primer i am doube checking. Specifically, I reached out to zymo and sent them a template for our p5 oligos to get there feedback.
