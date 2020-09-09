@@ -1,15 +1,15 @@
 # Troubleshooting i5 primer issues 
 
 ## Problem
-In two separate tests I have been able to successfully performe the BS conversion and library amplification using the pico methylation kit:
+In two separate tests I have been able to successfully perform the BS conversion and library amplification using the pico methylation kit:
 
 * [First example using larvae samples](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200902_PrimerTest1_picoMethylationLibraryPrep.md)
 * [Second example using lambda DNA](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200904_BSConversionUsingLamdaDNA.md)
 
 ## Troubleshooting so far...
 
-### Cofirmed out design
-Confirmed with Zymo that our primer design is not the problem, and should work with the kit (but may need some optimization):
+### Confirmed our design
+Confirmed with Zymo that our primer design is not the problem and should work with the kit (but may need some optimization):
 
 **Me**  
 ```
@@ -30,7 +30,7 @@ That p5 primer is compatible with the Pico adapters. The annealing temperature u
 
 ## Order barcoded oligos using the shorter primer design suggested by Zymo
 
-In the initial conversation with zymo about barcoding they suggested using a shorter primer:
+In the initial conversation with Zymo about barcoding they suggested using a shorter primer:
 
 ```
 AATGATACGGCGACCACCGAGATCTACACNNNNNNACACTCTTTCCCTACACGAC
@@ -38,7 +38,7 @@ compare to ours ..
 AATGATACGGCGACCACCGAGATCTACACNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT
 ```
 
-* We could try ordering a couple of these (about 20 dollars an oligo) to see if that works
+One option is could try ordering a couple of these (about 20 dollars an oligo) to see if the short primer works.
 
 ## Remake our primer stock
 
@@ -46,7 +46,7 @@ Alternatively, we could remake the i5 primer working stock and see if that helps
 
 ## Optimize the thermocycler protocol.
 
-Try a range of annealing temperatures to see if we can improve yield from the PCR step. This was something suggested by the Zymo reps.
+We could also try a range of annealing temperatures to see if we can improve yield by altering the PCR protocol. This was something suggested by the Zymo reps.
 
 
 ## Considerations for next steps
