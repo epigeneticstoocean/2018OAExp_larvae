@@ -80,11 +80,19 @@ After clean-up left sample overnight in fridge.
 * Eluted using TRIS HCL 20 uL
 
 **Initial Reaction**
-50 uL samples + 44 uL beads
+25 uL samples + 20 uL beads
 
 ### Quantification
 
+Used Qubit high sensitivity (HS) kit
 
+| Sample | Conc. (ng/ul) |
+|:-------:|:---:|
+| Sample 1 ( my i5 primer) | TOO LOW |
+| Sample 2 ( Sara's i5 primer) | TO LOW |
+| Starting Sheared Sample | 33.3 |
+| End repair A-tail product (Sample 1) | 8.01 |
+| Post first BW prodduct (Sample 1) | 1.92 |
 
-
-
+## Discussion
+The library prep failed. It seems like during either the final bead clean-up or amplification steps sample was lost the remaining sample. 
