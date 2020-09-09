@@ -39,8 +39,8 @@ Qubit Quantification (dsDNA HS kit)
 | CF01 x CM01 | 7.62 ng/ul | 
 
 **Links to tapestion**
-* [EM05 x EF01 - Larvae sample using lotterhos i7 primer](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-08-27-01.D1000_i5_L1LotterhosAdapter_PicoMethylationKitTest.pdf)
-* [CF01 x CM01 - Zygote sample using zymo i7 primer](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-09-03-01.D1000_i5_L1LotterhosAdapter_PicoMethylationKitTest_controlSample.pdf)
+* [EM05 x EF01 - Larvae sample using lotterhos i5 primer](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-08-27-01.D1000_i5_L1LotterhosAdapter_PicoMethylationKitTest.pdf)
+* [CF01 x CM01 - Zygote sample using zymo i5 primer](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-09-03-01.D1000_i5_L1LotterhosAdapter_PicoMethylationKitTest_controlSample.pdf)
 
 ## Discussion
 
