@@ -51,5 +51,5 @@ We could also try a range of annealing temperatures to see if we can improve yie
 
 ## Considerations for next steps
 
-* I currently have 44 reactions pico methylation kit reactions. A new 25 sample kit would cost around 1300.
+* I currently have 44 pico methylation kit reactions. A new 25 sample kit would cost around 1300.
 * Oligos would cost about 15-30 dollars per oligo (x2 per primer).
