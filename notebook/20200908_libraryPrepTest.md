@@ -57,17 +57,33 @@ After clean-up left sample overnight in fridge.
 ### PCR
 
 **Notes**
-* i5 (L1) my stock
-* i7 (LX) Sara's stock
+* i5 L1 my stock and L2 Sara's stock
+* i7 (L3) Sara's stock
 
 **Master Mix**
 | Reagent | Vol |
 |:-------:|:---:|
 | Hot Start| 12.5 uL |
-| i5 primer (L1) | 1.25 uL |
+| i5 primer (L1 mine or L2 Sara's stock) | 1.25 uL |
 
 **Reaction**
-10 uL sample + 1.25 uL i7 (LX) + 13.75 uL MM == 25 uL 
+10 uL sample + 1.25 uL i7 (L3) + 13.75 uL MM == 25 uL 
+* Sample 1 used my i5 L1 stock
+* Sample 2 used i5 L2 Sara's stock
+
+### Second Cleanup
+
+**Prep**
+* Created 80% EtOH  
+* 0.8X  Beadwash
+* 2 x 200uL EtOH wash
+* Eluted using TRIS HCL 20 uL
+
+**Initial Reaction**
+50 uL samples + 44 uL beads
+
+### Quantification
+
 
 
 
