@@ -19,7 +19,7 @@ Used Qubit HS kit
 | Sample | Conc. (ng/uL) | 
 |:------:|:-------------:|
 | Sample 1 (Zymo i5) | 16.4 |
-| Sample 2 (custom L1| | 0.848 |
+| Sample 2 (custom L1|) | 0.848 |
 
 ### Discussion
 
