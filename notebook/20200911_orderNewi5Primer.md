@@ -6,7 +6,11 @@ Based on the last two failed BS conversion tests, I will be ordering a couple of
 
 **Primer template** 
 ```
-AATGATACGGCGACCACCGAGATCTACACNNNNNNACACTCTTTCCCTACACGAC
+5’-AATGATACGGCGACCACCGAGATCTACAC----------TCTTTCCCTACACGACGCTCTT-3’ # i5 available in kit
+5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNACACTCTTTCCCTACACGAC-3'       # Suggested by rep for ordering
+
+Dashes (-) inserted to align sequence but are not present in actual primers.
+
 ``` 
 Pasted from Zymo email
 
