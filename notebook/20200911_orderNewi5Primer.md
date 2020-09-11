@@ -56,6 +56,6 @@ Oligo 2 (reverse compliment):
 5'-GTCGTGTAGGGAAAGAGTGTGGTCTAGTGTAGATCTCGGTGGTCGCCGTATCATT-3'
 ````
 
-Order Template for IDT for A508 based i5 primer [LINK]()
+Order Template for IDT for A508 based i5 primer [LINK](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020Sep_shortPrimer_illuminai5A508_oligoOrder.xlsx)
 
 
