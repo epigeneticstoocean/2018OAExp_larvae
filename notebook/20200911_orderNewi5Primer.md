@@ -39,7 +39,16 @@ And the list of suggest i5 barcodes from illumina TruSeq HT kit:
 
 These are currently 8 bases, but the Zymo rep said we could used the first 6 for a shorter primer.
 
+Based on a [short comparison](https://docs.google.com/spreadsheets/d/11MV5KLuCR5RvFRHDP_nClV57Vo_q64rImCUX1rksYGc/edit#gid=0) I will use the `A508` barcode with 6 bases as my test. 
 
+Sample oligos
+```
+Oligo 1:
+5'-AATGATACGGCGACCACCGAGATCTACACTAGACCACACTCTTTCCCTACACGAC-3'
+Oligo 2 (reverse compliment): 
+5'-GTCGTGTAGGGAAAGAGTGTGGTCTAGTGTAGATCTCGGTGGTCGCCGTATCATT-3'
+````
 
+Order Template for IDT for A508 based i5 primer [LINK]()
 
 
