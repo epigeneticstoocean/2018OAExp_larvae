@@ -14,7 +14,9 @@ Dashes (-) inserted to align sequence but are not present in actual primers.
 ``` 
 Pasted from Zymo email
 
-For reference the i7 primers that **already come with the Zymo kit**:
+### Primers  
+
+For reference the i7 primers that **comes with the Zymo kit**:
 
 | Index | Index Illumina | Index Sequence |
 |:-----:|:--------------:|:--------------:|
@@ -40,6 +42,11 @@ And the list of suggest i5 barcodes from illumina TruSeq HT kit:
 These are currently 8 bases, but the Zymo rep said we could used the first 6 for a shorter primer.
 
 Based on a [short comparison](https://docs.google.com/spreadsheets/d/11MV5KLuCR5RvFRHDP_nClV57Vo_q64rImCUX1rksYGc/edit#gid=0) I will use the `A508` barcode with 6 bases as my test. 
+
+
+### Target primer for test  
+
+The A508 barcode is sufficiently different that it shouldn't be a problem with the i7 primers used in the Zymo kit. Below are the oligos needed to make thie 6 bp version of the A508 barcode:
 
 Sample oligos
 ```
