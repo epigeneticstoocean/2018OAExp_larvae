@@ -13,8 +13,8 @@ Using new i5 primer I tested the pico methylation library prep to determine if t
 
 | Sample | i5 primer | i7 primer |
 |:------:|:---------:|:---------:|
-| A | | |
-| custom | A508 custom | |
+| A | Zymo | D |
+| custom | A508 custom | D |
 
 ### Quantification
 
