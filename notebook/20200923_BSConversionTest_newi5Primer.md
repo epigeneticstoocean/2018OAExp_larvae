@@ -20,6 +20,14 @@ Using new i5 primer I tested the pico methylation library prep to determine if t
 
 #### Qubit
 
+
+| Sample | concentration (ng/ul) | 
+|:------:|:---------:|
+| A (post BS conversion) | 0.528 | 
+| custom  (post BS conversion)  | 0.534 |
+| A (final amplification) | 18.10 | 
+| custom  (final amplification)  | 8.10  |
+
 #### Tapestation
 
 
