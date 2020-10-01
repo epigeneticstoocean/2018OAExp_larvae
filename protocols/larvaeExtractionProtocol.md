@@ -1,7 +1,7 @@
 # Extraction Protocol
 
 ## Description
-Protocol for extracting oyster larvae and zygote samples that have been stored on filter paper. Protocol is based on a Sawada et al 2008 protocol, which has been modified by the Hare lab group.  
+Protocol for extracting oyster larvae and zygote samples that have been stored on filter paper. Protocol is based on a [Sawada et al 2008 protocol](https://search.proquest.com/docview/224123298?pq-origsite=gscholar&fromopenview=true), which has been modified by the [Hare lab group](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/protocols/hare_larvaeExtractionProtocol.md).  
 
 ## Reagents
 
