@@ -58,4 +58,7 @@ Oligo 2 (reverse compliment):
 
 Order Template for IDT for A508 based i5 primer [LINK](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020Sep_shortPrimer_illuminai5A508_oligoOrder.xlsx)
 
+### Primer brain fart
+I treated the primer like an adapter (ds oligo). This has since been corrected, using `Oligo 1` as our target prime.
+
 
