@@ -3,6 +3,9 @@
 ### Overview
 Using new i5 primer I tested the pico methylation library prep to determine if the new shortened primers perform better than the custom primers previously designed.
 
+### ERROR
+I used the annealed i5 primer for this test. The peak in the custom i5 tapestation result could be due to this issue.
+
 
 **Sample** : previously created 5ng/ul (20ul x 5 = 100ng) unmethylated lambda DNA [LINK](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20200904_lambdaDNAworkingstock.md)
 
