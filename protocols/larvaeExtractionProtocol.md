@@ -8,7 +8,7 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 |Reagent|Amount (per sample)|
 |:-----:|:----:|
 | Digestion Buffer | 800 uL |
-| Proteinase K (13.5XX) | 20 uL |
+| Proteinase K (13.5mg/ul) | 20 uL |
 | EtOH (100%) | 2 mL |
 | 3M Sodium Acetate | 100 uL |
 | Fresh EtOH (70%) | 2 mL |
