@@ -19,6 +19,8 @@ Protocol for extracting oyster larvae and zygote samples that have been stored o
 * 10,200,1000 uL pipet tips
 * Scapel
 * Fine tip tweezers
+* Kimwipes
+* EtOH for cleaning tweezers and scapel
 
 ## Steps
 
@@ -67,17 +69,19 @@ This protocol was modified from Sawada et al 2008.
 Ethanol precipitation.  
 
     a) Set 100% EtoH into -20 C freezer (you will need 2mL x number of sampeles) for at least 30 minutes. And get your centrifuge to temp (-11C).
-    b) Use pipet to mix lysate then transfer 500uL into a new 1.5 mL tube. Leave the filter in the first tube initially.
-    c) To each tube add 1000 uL 100% EtOH (2x volume of cold (-20C) 100% ethanol). 
+    b) Use pipet to mix lysate then transfer 500uL into a new 1.5 mL tube. Leave the filter and the remaining 500uL of lysate in the first tube initially.
+    c) In each tube add 1000 uL 100% EtOH (2x volume of cold (-20C) 100% ethanol). 
     b) Add 50 uL 3M sodium acetate (1/10 volume of lysate). 
     c) Mix by quickly inverting several times.
     d) Incubate at -20 for at least 20 minutes.
     e) Centrifuge 10 minutes at maximum speed (at least 12k rpm). A refrigerated centrifuge is ideal, but room temperature can also be used.
-    f) Remove the supernatant. A pellet may not be visible, so care must be taken with this step.
-    g) Add 500ul 70% ethanol to wash the pellet. Invert several times, then centrifuge 5 minutes at maximum speed. Remove supernatant.
-    h) Repeat g once more for a total of two washes.
-    i) Air dry the pellet until all liquid has just disappeared, usually 5-10 minutes.
-    j) Resuspend in an appropriate volume of water or (ideally) of Tris HCl pH 7.5-8.
+    f) Gently remove the filter from the tube. Taking care to make sure no precipitate is stuck to the bottom of the filter (this contains the DNA product).
+    g) Centrifuge for an additional 2 minutes at maximum speed (at least 12k rpm). A refrigerated centrifuge is ideal, but room temperature can also be used.
+    h) Remove the supernatant. A pellet may not be visible, so care must be taken with this step.
+    i) Add 500ul 70% ethanol to wash the pellet. Invert several times, then centrifuge 5 minutes at maximum speed. Remove supernatant.
+    j) Repeat `step i` once more for a total of two washes.
+    k) Air dry the pellet until all liquid has just disappeared, usually 5-10 minutes.
+    l) Resuspend in an appropriate volume of water or (ideally) of Tris HCl pH 7.5-8.
 
 ### 4) **Results**
   
