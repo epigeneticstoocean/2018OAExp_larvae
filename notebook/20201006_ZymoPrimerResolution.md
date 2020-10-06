@@ -21,10 +21,15 @@ The index primer in section five consists of BOTH i5 and 17 at a concentration o
 
 i5
 ```
+5’-AATGATACGGCGACCACCGAGATCTACAC------------TCTTTCCCTACACGACGCTCTT-3’ i5 provided initial by Zymo
+5'-AATGATACGGCGACCACCGAGATCTACACNNNNNN--ACACTCTTTCCCTACACGAC-3' i5 also provided by Zymo (6 base example)
 
+5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT-3' i5 custom - previously ordered (8 base index)
+5'-AATGATACGGCGACCACCGAGATCTACACNNNNNN--ACACTCTTTCCCTACACGAC-3' i5 custom - new using short design from Zymo (6 based index)
 ```
 
 i7
 ```
-
+5’-CAAGCAGAAGACGGCATACGAGAT------GTGACTGGAGTTCAGACGTGTG-3’ i7 provided initially by Zymo
+5'-CAAGCAGAAGACGGCATACGAGATNNNNNNGTGACTGGAGTTCAGACGTGTGC-3' i7 custom - previously ordered (6 base index)
 ```
