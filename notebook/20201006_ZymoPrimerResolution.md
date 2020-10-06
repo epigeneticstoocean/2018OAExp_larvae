@@ -21,9 +21,11 @@ The index primer in section five consists of BOTH i5 and 17 at a concentration o
 
 i5
 ```
+From Zymo
 5’-AATGATACGGCGACCACCGAGATCTACAC------------TCTTTCCCTACACGACGCTCTT-3’ i5 provided initial by Zymo
 5'-AATGATACGGCGACCACCGAGATCTACACNNNNNN--ACACTCTTTCCCTACACGAC-3' i5 also provided by Zymo (6 base example)
 
+Custom Primers
 5'-AATGATACGGCGACCACCGAGATCTACACNNNNNNNNACACTCTTTCCCTACACGACGCTCTTCCGATCT-3' i5 custom - previously ordered (8 base index)
 5'-AATGATACGGCGACCACCGAGATCTACACNNNNNN--ACACTCTTTCCCTACACGAC-3' i5 custom - new using short design from Zymo (6 based index)
 ```
@@ -33,3 +35,14 @@ i7
 5’-CAAGCAGAAGACGGCATACGAGAT------GTGACTGGAGTTCAGACGTGTG-3’ i7 provided initially by Zymo
 5'-CAAGCAGAAGACGGCATACGAGATNNNNNNGTGACTGGAGTTCAGACGTGTGC-3' i7 custom - previously ordered (6 base index)
 ```
+
+### Test design
+
+
+| Sample | i5 name | i5 index | i7 name | i7 index | 
+|:------:|:--:|:--:|:--:|:--:|
+| Zymo | Index A  | None | Index A | CGATGT | 
+| Custom 1 | i5_PCRprimer_L1_D501_AGGCTATA (old) | AGGCTATA | PCR2_09_GATCAG | GATCAG |
+| Custom 2 | A508 (new) | TAGACCTA | PCR2_09_GATCAG | GATCAG |
+     
+     
