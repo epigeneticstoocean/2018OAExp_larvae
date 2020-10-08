@@ -44,5 +44,20 @@ i7
 | Zymo | Index A  | None | Index A | CGATGT | 
 | Custom 1 | i5_PCRprimer_L1_D501_AGGCTATA (old) | AGGCTATA | PCR2_09_GATCAG | GATCAG |
 | Custom 2 | A508 (new) | TAGACCTA | PCR2_09_GATCAG | GATCAG |
+
+### Library Test
+
+Performed a test on three samples using primer design above and following standard manufacturers protocols. I quantified the results using a Qubit HS dsDNA. In the final PCR step (indexing PCR), I added 0.5 ul of the primer mix (10uM) to the Zymo sample (contains both i5 and i7), while I added 0.5ul of each primer (conc. 10uM) for the two custom primer samples.  
+
+**Quantification results**:
+
+| Sample | Conc. (ng/ul)|
+|:------:|:--:|
+| Zymo | 15.5  | 
+| Custom 1 | 0.98 | 
+| Custom 2 | 1.5 | 
+
+It appears that the custom primers didn't work, although I did see slightly more product in the custom 2. I will be running this on the tapestation to determine is this may be a small amount of amplification of the target sequence of primer dimer.
+
      
      
