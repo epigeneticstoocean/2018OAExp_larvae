@@ -64,3 +64,8 @@ Final recipe:
   1uL of 100uM primer B mix
   8uL ddH20
 ```
+
+As a double check, we can work backwards. The final recipe has 100pM of primerA and 100pM of primer B in 10uL of water:
+```
+100pM/10uL = 10pM/uL = 10uM primer A (same for primer B)
+```
