@@ -1,4 +1,4 @@
-# Calculations for creating 10uM primer mix
+# Calculations for creating 10uM combined primer mix
 
 ### Overview
 The goal is to create a 10uM primer mix using custom primers that mirrors the primer mixes provides by Zymo. After the first test adding two primers (i5 and i7) to the final PCR, it appeared that one of the custom samples worked marginally, but was not as efficient as the sample using only Zymo primers. One possible reason for this was use of a mix that combines i5 and i7 primers.
