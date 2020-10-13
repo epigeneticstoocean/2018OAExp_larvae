@@ -48,13 +48,13 @@ You need to start with a higher concentration of primers, and the final volume o
 ```
 Final volume = 10uL
 Final molarity of each primer = 10uM = 10pM/uL
-Starting molarity of each primer = 100uM primerA
+Starting molarity of each primer = 100uM primerA (same for primerB)
 
 Number of moles needed for a 10uM solution in a final volumen of 10uL
   10uL * 10pM/uL = XpM
   X = 100pM
   
-Number uL of 100uM primer A:
+Number uL of 100uM primer A (same for primerB):
   100uM = 100pM/uL
   100pM/uL * XuL = 100pM
   X = 1uL
