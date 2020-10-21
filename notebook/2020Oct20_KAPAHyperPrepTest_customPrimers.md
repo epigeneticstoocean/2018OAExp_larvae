@@ -7,6 +7,8 @@ This test was to confirm that the custom design primers (specifically the stock 
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg27_2020Oct21_HyperKitPrep_customPrimers_pt1.jpg)
 ![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg28_2020Oct21_HyperKitPrep_customPrimers_pt2.jpg)
 
+## [Confirming adapter and primer compatability](https://docs.google.com/document/d/1U8CH-pDtkQffdZUC7FBZo6pA2GM9r0NLqMxDMgERMnw/edit#heading=h.8yhxvl68q6tx)
+
 ## [Agilent Results](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-10-21-02.D1000_i5_L1LotterhosLab_KAPATEST.pdf)
 
 ## Thoughts
