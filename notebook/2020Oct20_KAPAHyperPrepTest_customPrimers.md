@@ -4,8 +4,9 @@
 This test was to confirm that the custom design primers (specifically the stock I am working with) is work properly. For the test I made new working stocks for both the adapters (y-inline nobarcode) and the primers (). I then performed a standard KAPA hyperplus library prep on three samples (Sample 1: using the KAPA standard primers for the final PCR step, Sample 2: using the long custom i5 primer, Sample 3: using the short custom i5 primer). The aim was to confirm these working stocks should work using a protocol that has worked previous with these primers.
 
 ## Notebook entry
-![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg27_2020Oct21_HyperKitPrep_customPrimers_pt1.jpg)
-![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg28_2020Oct21_HyperKitPrep_customPrimers_pt2.jpg)
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg29_2020Oct21_HyperKitPrep_customPrimers_pt1.jpg)
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg30_2020Oct21_HyperKitPrep_customPrimers_pt2.jpg)
+![](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg31_2020Oct21_HyperKitPrep_customPrimers_pt3.jpg)
 
 ## [Confirming adapter and primer compatability](https://docs.google.com/document/d/1U8CH-pDtkQffdZUC7FBZo6pA2GM9r0NLqMxDMgERMnw/edit#heading=h.8yhxvl68q6tx)
 
