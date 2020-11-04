@@ -14,6 +14,8 @@
 ### Things to order 
 
 * 1 Zymo pico methylation library prep kit (25 preps)
+* 1 Tapestation tape D1000  (7 tapes x 16 samples)
+* 1 Qubit HS dsDNA (100 preps)
 
 ## Primers
 
