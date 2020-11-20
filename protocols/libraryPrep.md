@@ -39,10 +39,9 @@ The thermocycler program from the manufacturer is used, but the reaction for eac
 | Sample (section 4) | 12.0 uL |
 | Total | 28 uL |
 
+**NOTE** : The primer mix was based on custom i5 and i7 primers (not those provided by Zymo), to allow for pooling larger number of samples. Details on primers [here](https://docs.google.com/spreadsheets/d/1qyD_MjNPl1x__9BprDPkgEpa2RGsOgf3/edit#gid=446958664). 
+
 ## Step 6 
 
 Quantification for each sample is down using a Qubit (HS dsDNA kit) first, then run on an Agilent tapestation for confirmation if there was a measurable amount of DNA using the Qubit.
-
-
-## Step 6
 
