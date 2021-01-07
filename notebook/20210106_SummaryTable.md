@@ -2,7 +2,7 @@
 
 
 
-| Sample | Primer Code | BW | Final Concentration | Final Volume | Tapestation Link | Notebook | 
+| Sample | Primer Code | Bead Wash | Final Concentration (ng/ul) | Final Volume (ul) | Tapestation Link | Notebook | 
 |:------:|:-----------:|:--:|:-------------------:|:------------:|:----------------:|:--------:|
 | EF05_EM01_B1_QG	 | 1 | N | 31.2 | 10 | [Sample 1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-11-19_L18_R1_2samples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201117_L18LibraryPrep_S1_2samples.md) |
 | CF01_CM01_B1_Meth	| 2 | N | 25.6 | 10 | [Sample 2](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/sequencing%20reports/2020-11-19_L18_R1_2samples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201117_L18LibraryPrep_S1_2samples.md) |
