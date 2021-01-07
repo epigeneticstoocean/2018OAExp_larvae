@@ -43,5 +43,5 @@
 
 ## Thoughts
 
-In order to achieve the 20 ng/ul concentration recommendation we will have to either to a bead clean up or use the vacuum evaporator.
+In order to achieve the 20 ng/ul concentration recommendation we will have to either do a bead clean up or use the vacuum evaporator.
 
