@@ -33,11 +33,11 @@
 | EF04_EM05_B1_QG	| 27 | Y | 28.2 | 12 | [A6](epigeneticstoocean) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201230_BeadWashandBSConversion.md) |
 | CF07_CM04_B1_QG	| 28 | Y | 1.98 | 12 | [A7](epigeneticstoocean) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201230_BeadWashandBSConversion.md) |
 | EF07_EM03_B1_QG	| 29 | Y | 15.6 | 12 | [A8](epigeneticstoocean) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201230_BeadWashandBSConversion.md) |
-| EF07_EM02_B1_QG	| 30 | Y |
-| CF05_CM01_B1_QG	| 31 | Y |
-| EF05_EM06_B1_QG	| 32 | Y |
-| CF08_CM04_B1_QG	| 33 | Y |
-| EF08_EM03_B1_QG	| 34 | Y |
-| CF03_CM04_B1_QG	| 35 | Y |
-| CF08_CM05_B1_QG	| 36 | Y |
-| EF04_EM06_B1_QG	| 37 | Y |
+| EF07_EM02_B1_QG	| NA | Y | TOO LOW (after BW) | NA | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg52_2021Jan04_L18LibPrep_BeadWashBSConversion.jpg) | 
+| CF05_CM01_B1_QG	| NA | Y | TOO LOW (after BW) | NA | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/figures/pg52_2021Jan04_L18LibPrep_BeadWashBSConversion.jpg) | 
+| EF05_EM06_B1_QG	| 30 | Y | 9.5 | 12 | [B1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
+| CF08_CM04_B1_QG	| 31 | Y | 12.2 | [C1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
+| EF08_EM03_B1_QG	| 32 | Y | 7.72 | [D1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
+| CF03_CM04_B1_QG	| 33 | Y | 5.84 | [E1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
+| CF08_CM05_B1_QG	| 34 | Y | 1.79 | [F1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
+| EF04_EM06_B1_QG	| 35 | Y | 0.176 | Not Run | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
