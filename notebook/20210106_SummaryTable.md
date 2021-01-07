@@ -9,7 +9,7 @@
 | CF03_CM03_B1_Meth	| 3 | Y | 14.3 | 10 | [E1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-12-16-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201215_BSConversion.md) |
 | EF05_EM05_B1_Meth	| 4 | N | 15.4 | 10 | [B1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-12-16-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201120_BSConversion.md)
 | EF02_EM02_B1_Meth	| 5 | N | 19.2 | 10 | [C1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-12-16-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201120_BSConversion.md)
-| CF04_CM04_B1_Meth	| 6 | Y | 9.28 | 10 | [F1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-12-16-01_L18_LibPrep_OffspringSamples.pdf) | [Link]([Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201215_BSConversion.md) |
+| CF04_CM04_B1_Meth	| 6 | Y | 9.28 | 10 | [F1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-12-16-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201215_BSConversion.md) |
 | EF04_EM04_B1_Meth	| 7 | N | 10.1 | 10 | [D1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-12-16-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20201120_BSConversion.md) | 
 | CF06_CM01_B1_Meth	| 8 |
 | CF05_CM05_B1_Meth	| 9 |
