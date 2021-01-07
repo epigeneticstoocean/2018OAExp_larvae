@@ -1,6 +1,6 @@
 # Summary of all sample preps using the Pico Methylation Kit
 
-
+## [Link to full datasheet](https://docs.google.com/spreadsheets/d/1l4f2s0nbyNUgenjXhhB8-FzqPRpRpzZvG_iymL_z-WM/edit#gid=351839693)
 
 | Sample | Primer Code | Bead Wash | Final Concentration (ng/ul) | Final Volume (ul) | Tapestation Link | Notebook | 
 |:------:|:-----------:|:--:|:-------------------:|:------------:|:----------------:|:--------:|
@@ -41,3 +41,13 @@
 | CF03_CM04_B1_QG	| 33 | Y | 5.84 | 12 | [E1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
 | CF08_CM05_B1_QG	| 34 | Y | 1.79 | 12 | [F1](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/labwork/2020-01-04-01_L18_LibPrep_OffspringSamples.pdf) | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
 | EF04_EM06_B1_QG	| 35 | Y | 0.176 | 12 | Not Run | [Link](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/notebook/20210104_BeadWashandBSConversion.md) |
+
+## Additional Notes
+
+1) EF07_EM02_B1_QG	and CF05_CM01_B1_QG did not have a measurable quantity of DNA after the beadwash so I did not perform a library prep on those samples
+2) EF04_EM06_B1_QG (primer 35) had exceptionally low concentration after library prep so I did not run on the tapestation
+3) EF06_EM06_B1_Meth (primer 13), CF07_CM04_B1_QG (primer 28), and CF08_CM05_B1_QG (primer 34) did not show strong visible trace on tapestation consistent with low concentrations from qubit.
+4) CF08_CM03_B1_Meth (primer 10) did not show up on tapestation, but this appears to be due to a sample failure in the machine rather than a poor quality sample.
+
+
+
