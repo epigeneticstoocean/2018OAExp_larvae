@@ -30,9 +30,18 @@
 
 ## Table for variable pool sizes
 
-| Target Amount (ng) | Number of Samples | Amount per sample (ng) | Concentration (ng/ul; given 10uL) | 
-|:-------------:|:-----------------:|:-----------------:|:--------------------------:|
-| 500 | 30 | 16.7 | 1.67 |
-| 1000 | 30 | 33.4 | 3.34 |
-| 1500 | 30 | 50 | 5 | 
+| Target Amount (ng) | Number of Samples | Amount per sample (ng) | Concentration (ng/ul; given 10uL) | Total Volume of pool (ul) | Estimated Concentration |
+|:------------------:|:-----------------:|:----------------------:|:---------------------------------:|:-------------------------:|:-----------------------:|
+| 500 | 31 | 16.2 | 1.67 | 37.6 | 13.298 |
+| 1000 | 31 | 32.3 | 3.34 | 74.99 | 12.335 |
+| 1500 | 31 | 48.4 | 5 | 112.34 | 13.352 |
+
+**NOTES**
+1) Amount per sample rounded to the nearest 0.1 ng rounded up.
+2) Total pool volume based on round pipet volume of each samples to nearest 0.01 due to limitations on pipetting accuracy.
+3) Numbers above were calculated on [the larvae spreadsheet](https://docs.google.com/spreadsheets/d/1l4f2s0nbyNUgenjXhhB8-FzqPRpRpzZvG_iymL_z-WM/edit#gid=351839693)
+
+## Thoughts
+
+In order to achieve the 20 ng/ul concentration recommendation we will have to either to a bead clean up or use the vacuum evaporator.
 
