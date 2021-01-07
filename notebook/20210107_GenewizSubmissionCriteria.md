@@ -30,9 +30,9 @@
 
 ## Table for variable pool sizes
 
-| Target Amount | Number of Samples | Amount per sample | Concentration (given 10uL) | 
+| Target Amount (ng) | Number of Samples | Amount per sample (ng) | Concentration (ng/ul; given 10uL) | 
 |:-------------:|:-----------------:|:-----------------:|:--------------------------:|
-| 500 |
-| 500 |
-| 1000 |
+| 500 | 30 | 16.7 | 1.67 |
+| 1000 | 30 | 33.4 | 3.34 |
+| 1500 | 30 | 50 | 5 | 
 
