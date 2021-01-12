@@ -9,8 +9,8 @@ library(GGally)
 library(stringr) # str_split function
 
 ## Read files
-#setwd("~/Github/LarvaeTransGen2018") # Local path
-setwd("~/LarvaeTransGen2018") # Discovery cluster
+setwd("~/Github/LarvaeTransGen2018") # Local path
+#setwd("~/LarvaeTransGen2018") # Discovery cluster
 
 ## Phenotypes of all larvae
 LDat <- read.csv("data/LarvaeDat.csv")
@@ -58,6 +58,7 @@ cnames <- c("animal","damID","sireID","JarID","JarTrt","ParentTrt",
             "GrowthPerDay","MajMinRat","PerimDiamRat")
 pheno_allSub <- subset(pheno_all,select=cnames)
 
+colnames()
 pheno_allSub %>% group_by(JarID) %>%
   summarise(damID=unique(damID),sireID=unique(sireID),JarTrt=unique(JarTrt),ParentTrt=unique(ParentTrt),
             Area=mean(LarvaeAreaum2),Diameter=mean(LarvaeDiamum),Perimeter=mean(LarvaePerimeterum),
