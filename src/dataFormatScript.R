@@ -33,6 +33,13 @@ ped_jar <- data.frame(id=pheno_jar$animal,dam=out_female,sire=out_male )
 ped_jar <- rbind(damsj,siresj,ped_jar)
 ped_jar$id <- as.character(ped_jar$id)
 
+colnames(pheno_jar)
+pheno_jar$LarvaeSurvived
+995-pheno_jar$LarvaeSurvived
+pheno_jar$OrigTotalLarvae
+pheno_jar$LarvaePermL*pheno_jar$mLJarActual - pheno_jar$LarvaeSurvived
+pheno_jar$LarvaePermL*pheno_jar$mLJarActual - pheno_jar$v2SurvCount
+pheno_jar$LarvaePermL*pheno_jar$mLJarActual - pheno_jar$v1_5SurvCount
 ## Correlations
 # Target Phenotype subsets
 # Individual
@@ -53,14 +60,13 @@ jar_pair <- ggpairs(pheno_jarCorr)
 ggsave("~/2018OAExp_larvae/input_files/CorrelationPlot_JarPhenotypes.png",plot=jar_pair)
 
 ## Data tranformation and subsets 
-cnames <- c("animal","damID","sireID","JarID","JarTrt","ParentTrt",
+cnames <- c("animal","damID","sireID","JarID","JarTrt","ParentTrt", "JarSeatable",
             "LarvaeAreaum2","LarvaeDiamum","LarvaePerimeterum",
             "GrowthPerDay","MajMinRat","PerimDiamRat")
 pheno_allSub <- subset(pheno_all,select=cnames)
 
-colnames()
 pheno_allSub %>% group_by(JarID) %>%
-  summarise(damID=unique(damID),sireID=unique(sireID),JarTrt=unique(JarTrt),ParentTrt=unique(ParentTrt),
+  summarise(damID=unique(damID),sireID=unique(sireID),JarTrt=unique(JarTrt),ParentTrt=unique(ParentTrt),SeaTable=unique(JarSeatable),
             Area=mean(LarvaeAreaum2),Diameter=mean(LarvaeDiamum),Perimeter=mean(LarvaePerimeterum),
             Growth=mean(GrowthPerDay),MMR=mean(MajMinRat),PDR=mean(PerimDiamRat)) -> pheno_sumAll
 
