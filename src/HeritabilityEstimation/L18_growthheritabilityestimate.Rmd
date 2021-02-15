@@ -1,8 +1,8 @@
----
+  ---
 title: "Heritability Growth Estimate"
 output: 
   github_document:
-  toc : true
+    toc : true
   toc_depth: 3
   theme: united
 ---
