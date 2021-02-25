@@ -1,8 +1,9 @@
 Larval Growth Heritability Estimation
 ================
 
--   [Data](#data)
--   [Libraries](#libraries)
+-   [Overview](#overview)
+    -   [Data and Scripts](#data-and-scripts)
+    -   [Libraries](#libraries)
 -   [Summary of Models](#summary-of-models)
 -   [Parameterization](#parameterization)
     -   [Priors](#priors)
@@ -18,27 +19,56 @@ Larval Growth Heritability Estimation
     -   [Model 3 (Partial Model)](#model-3-partial-model)
     -   [Model 6 (Full Model)](#model-6-full-model)
 
-## Data
+# Overview
+
+Summary of the model outputs for the **MCMCglmm** models used for
+estimating heritability of larvae growth. Growth is represented here as
+larval area. Below I explore several different models in order to
+evaluate the impact of different random effects, priors, and data on
+heritability estimates.
+
+In this summary the full model looks like this;
+
+![Area = G + M + J + S + R](https://latex.codecogs.com/png.latex?Area%20%3D%20G%20%2B%20M%20%2B%20J%20%2B%20S%20%2B%20R "Area = G + M + J + S + R")
+
+where ![G](https://latex.codecogs.com/png.latex?G "G") is pedigree or
+genetic component, ![R](https://latex.codecogs.com/png.latex?R "R") is
+the damID or maternal component,
+![J](https://latex.codecogs.com/png.latex?J "J") is the JarID,
+![S](https://latex.codecogs.com/png.latex?S "S") is the seatableID, and
+![R](https://latex.codecogs.com/png.latex?R "R") is the residual
+variation. Additional simpler models are also explored (details under
+*Summary of Models*).
+
+**Note** : Area is the response variable used in these models for the
+moment to represent larvae growth, until I confirm that the growthrate
+measurements in the dataset aren’t corrected by egg size. Area was also
+scaled using the `scale()` function.
+
+## Data and Scripts
 
 ``` r
 mod_output <- readRDS("~/Desktop/GrowthHeritabilityEstimate.RDS")
 ```
 
+**Links to Data and Scripts**
+
+-   [Data Format
+    Script](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/src/dataFormatScript.R)
+-   **Formatted Data**
+    ([Individual](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/input_files/IndHeritabilityData.RDS),[Family](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/input_files/JarHeritabilityData.RDS))
+-   [Model
+    Script](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/src/HeritabilityEstimation/L18_heritabilityOfGrowth_MCMCGlMM_Feb2021.R)
+
 ## Libraries
 
 ``` r
-library(ggplot2)
-library(cowplot)
-library(knitr)
-library(rmarkdown)
-library(MCMCglmm)
+library(ggplot2,quietly = T)
+library(cowplot,quietly = T)
+library(knitr,quietly = T)
+library(MCMCglmm,quietly = T)
+library(reshape2,quietly = T)
 ```
-
-    ## Loading required package: Matrix
-
-    ## Loading required package: coda
-
-    ## Loading required package: ape
 
 # Summary of Models
 
@@ -134,19 +164,87 @@ level heritability in Grunion in ambient and OA conditions.
 
 ### Main Takeaways
 
-1.  Not including dam (and to lesser extend one or both of the
-    experimental random effects) has a substantial impact on the genetic
-    component in the model (i.e. dam and other random effects consume a
-    substantial amount of the variance explained by the genetic
-    component when included in the model).
-2.  The two priors do not seem to alter our estimate of heritability.
-3.  Measuring heritability at the family vs. individual level leads to a
-    downward estimate of heritability compared to the model that uses
+1.  **Model 2 vs other models** - Not including dam (and to lesser
+    extend one or both of the experimental random effects) has a
+    substantial impact on the genetic component in the model (i.e. dam
+    and other random effects consume a substantial amount of the
+    variance explained by the genetic component when included in the
+    model).
+2.  **Model 3 vs Model 3 InvW** - The two priors do not seem to alter
+    our estimate of heritability.
+3.  **Model 4 vs Model 4 fam & Model 5 vs Model 5 fam** - Measuring
+    heritability at the family vs. individual level leads to a downward
+    estimate of heritability compared to the model that uses
     individuals.
+4.  **Model 1 vs Model 3 vs Model 6** - Inclusion of all effects
+    including sire (model 1), all effects minus sire (model 6), and the
+    simpler model including animal, dam, and jar (model 3) appear to
+    generate similar estimates of heritability.
 
 # Variance and Heritability Comparisons for “Full Model” (Model 6) and “Best Model” (Model 3)
 
 ![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+### Take-aways
+
+1.  Large credibility intervals and low heritability for all parent and
+    offspring treatment combinations.
+2.  **P-Exposed O-Exposed vs others** - Heritability seems slightly
+    higher for the ExposedxExposed scenario, but not significantly so
+    based on the credibility intervals.
+3.  **dam vs genetic** - Generally, the maternal component is larger in
+    in larvae from parents in ambient conditions, whereas the genetic
+    component appears larger in larvae from exposed parents.
+
+### Variance Components for Model 3
+
+    ## No id variables; using all as measure variables
+
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+    ## No id variables; using all as measure variables
+
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+
+    ## No id variables; using all as measure variables
+
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
+
+    ## No id variables; using all as measure variables
+
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
+
+### Take-aways
+
+1.  **Large residual variation** : We can see that residual variation is
+    large compared to all other variance components.
+2.  **Wide distributions for animal and dam** : In all cases the model
+    struggles to consistently estimate the variance explained by animal
+    and dam, leading to the broad distributions relative to the other
+    variance components.
+
+<!-- -->
+
+    ## `geom_smooth()` using formula 'y ~ x'
+    ## `geom_smooth()` using formula 'y ~ x'
+    ## `geom_smooth()` using formula 'y ~ x'
+    ## `geom_smooth()` using formula 'y ~ x'
+
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+**Figure Caption**: Black line is 1:1 line, blue line is the mean
+maternal SD (y-axis), green is mean genetic SD (x-axis), orange is
+linear model fit using `geom_smooth`
+
+### Take-aways
+
+1.  Does appear to be a slightly negative relationship between the
+    maternal and genetic variance components. This is indicates that
+    perhaps part of the reason the distributions of the SDs for this two
+    components are wide is partially due to the model struggling to
+    handle the correlation between these two components?? Although the
+    outliers SD estimate for dam (large values on the y-axis) do not
+    appear to necessarily lead to a dramatic decrease in the genetic
+    estimate.
 
 # Main Observations
 
@@ -216,7 +314,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
     ##            (Intercept)
     ## Lag 0      1.000000000
@@ -234,7 +332,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                    
     ## (Intercept) passed    0.86 0.00854
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
     ##                animal       damID        JarID        units
     ## Lag 0      1.00000000  1.00000000  1.000000000  1.000000000
@@ -294,7 +392,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
     ##            (Intercept)
     ## Lag 0      1.000000000
@@ -312,7 +410,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                      
     ## (Intercept) passed    -0.942 0.00475
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
     ##                 animal        damID        JarID         units
     ## Lag 0      1.000000000  1.000000000  1.000000000  1.0000000000
@@ -372,7 +470,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
     ##           (Intercept)
     ## Lag 0      1.00000000
@@ -390,7 +488,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                     
     ## (Intercept) passed    0.903 0.00689
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
     ##                 animal       damID        JarID        units
     ## Lag 0      1.000000000  1.00000000  1.000000000  1.000000000
@@ -450,7 +548,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
     ##            (Intercept)
     ## Lag 0      1.000000000
@@ -468,7 +566,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                      
     ## (Intercept) passed    -0.788 0.00699
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
     ##                animal        damID        JarID        units
     ## Lag 0      1.00000000  1.000000000  1.000000000  1.000000000
@@ -535,7 +633,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
     ##           (Intercept)
     ## Lag 0      1.00000000
@@ -553,7 +651,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                     
     ## (Intercept) passed    0.876 0.0309
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
 
     ##                 animal         damID        JarID  JarSeatable       units
     ## Lag 0      1.000000000  1.0000000000  1.000000000  1.000000000  1.00000000
@@ -620,7 +718,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
     ##            (Intercept)
     ## Lag 0      1.000000000
@@ -638,7 +736,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                      
     ## (Intercept) passed    -0.914 0.0761
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-21-2.png)<!-- -->
 
     ##                 animal        damID        JarID   JarSeatable       units
     ## Lag 0      1.000000000  1.000000000  1.000000000  1.0000000000  1.00000000
@@ -705,7 +803,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
     ##            (Intercept)
     ## Lag 0      1.000000000
@@ -723,7 +821,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                     
     ## (Intercept) passed    0.916 0.0242
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-21-2.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
 
     ##                 animal        damID       JarID   JarSeatable        units
     ## Lag 0      1.000000000  1.000000000  1.00000000  1.0000000000  1.000000000
@@ -790,7 +888,7 @@ level heritability in Grunion in ambient and OA conditions.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
     ##            (Intercept)
     ## Lag 0      1.000000000
@@ -808,7 +906,7 @@ level heritability in Grunion in ambient and OA conditions.
     ##             test                      
     ## (Intercept) passed    -0.769 0.0457
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->
 
     ##                 animal        damID       JarID  JarSeatable        units
     ## Lag 0      1.000000000  1.000000000  1.00000000  1.000000000  1.000000000

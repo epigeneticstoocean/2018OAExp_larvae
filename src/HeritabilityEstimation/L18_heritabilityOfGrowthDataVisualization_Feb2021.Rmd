@@ -2,13 +2,22 @@
 title: "Larval Growth Heritability Estimation"
 output:
   github_document:
+    pandoc_args: --webtex
     toc: true
     toc_depth: 2
 ---
 
-## Overview
+# Overview
 
-This is a summary for 
+Summary of the model outputs for the **MCMCglmm** models used for estimating heritability of larvae growth. Growth is represented here as larval area. Below I explore several different models in order to evaluate the impact of different random effects, priors, and data on heritability estimates.
+
+In this summary the full model looks like this;
+
+$$Area = G + M + J + S + R$$
+where $G$ is pedigree or genetic component, $R$ is the damID or maternal component, $J$ is the JarID, $S$ is the seatableID, and $R$ is the residual variation. Additional simpler models are also explored (details under *Summary of Models*).
+
+**Note** : Area is the response variable used in these models for the moment to represent larvae growth, until I confirm that the growthrate measurements in the dataset aren't corrected by egg size. Area was also scaled using the ```scale()``` function.
+
 ## Data and Scripts
 ```{r}
 mod_output <- readRDS("~/Desktop/GrowthHeritabilityEstimate.RDS")
@@ -16,13 +25,17 @@ mod_output <- readRDS("~/Desktop/GrowthHeritabilityEstimate.RDS")
 
 **Links to Data and Scripts**
 
+* [Data Format Script](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/src/dataFormatScript.R)
+* **Formatted Data** ([Individual](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/input_files/IndHeritabilityData.RDS),[Family](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/input_files/JarHeritabilityData.RDS))
+* [Model Script](https://github.com/epigeneticstoocean/2018OAExp_larvae/blob/master/src/HeritabilityEstimation/L18_heritabilityOfGrowth_MCMCGlMM_Feb2021.R)
+
 ## Libraries
 ```{r}
-library(ggplot2)
-library(cowplot)
-library(knitr)
-library(rmarkdown)
-library(MCMCglmm)
+library(ggplot2,quietly = T)
+library(cowplot,quietly = T)
+library(knitr,quietly = T)
+library(MCMCglmm,quietly = T)
+library(reshape2,quietly = T)
 ```
 
 # Summary of Models
@@ -95,12 +108,12 @@ ggplot(sumTab,aes(model,animal_H2_mean,colour=model)) +
 
 ### Main Takeaways
 
-1) Not including dam (and to lesser extend one or both of the experimental random effects) has a substantial impact on the genetic component in the model (i.e. dam and other random effects consume a substantial amount of the variance explained by the genetic component when included in the model).
-2) The two priors do not seem to alter our estimate of heritability.
-3) Measuring heritability at the family vs. individual level leads to a downward estimate of heritability compared to the model that uses individuals.
+1) **Model 2 vs other models** - Not including dam (and to lesser extend one or both of the experimental random effects) has a substantial impact on the genetic component in the model (i.e. dam and other random effects consume a substantial amount of the variance explained by the genetic component when included in the model).
+2) **Model 3 vs Model 3 InvW** - The two priors do not seem to alter our estimate of heritability.
+3) **Model 4 vs Model 4 fam & Model 5 vs Model 5 fam** - Measuring heritability at the family vs. individual level leads to a downward estimate of heritability compared to the model that uses individuals.
+4) **Model 1 vs Model 3 vs Model 6** - Inclusion of all effects including sire (model 1), all effects minus sire (model 6), and the simpler model including animal, dam, and jar (model 3) appear to generate similar estimates of heritability.
 
 # Variance and Heritability Comparisons for "Full Model" (Model 6) and "Best Model" (Model 3)
-
 ```{r echo=F}
 sumTabSub <- subset(sumTab,sumTab$model == "Model3" | sumTab$model == "Model6")
 
@@ -124,6 +137,74 @@ ggplot(df,aes(x=treatment,y=meanH)) +
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 25, vjust = 0.5, hjust=1))
 ```
+
+### Take-aways
+
+1) Large credibility intervals and low heritability for all parent and offspring treatment combinations.
+2) **P-Exposed O-Exposed vs others** - Heritability seems slightly higher for the ExposedxExposed scenario, but not significantly so based on the credibility intervals.
+3) **dam vs genetic** - Generally, the maternal component is larger in in larvae from parents in ambient conditions, whereas the genetic component appears larger in larvae from exposed parents.
+
+### Variance Components for Model 3
+```{r echo=F,fig.height=10,warning=F}
+model_var <- function(x,title){
+  ## Plot for visualizing all random variance components
+ref <- data.frame(x)
+rdf <- melt(ref,value.name="Area") # Replace growth rate is using another phenotype
+density_plot <- ggplot(rdf,aes(x=sqrt(Area),color=variable)) +
+  xlim(0,1) +
+  geom_density() +
+  labs(x="",title=title) +
+  theme_cowplot() +
+  theme(legend.position = "none",plot.title = element_text(hjust = 0.5))
+boxplot_plot <- ggplot(rdf,aes(x=sqrt(Area),y=variable,color=variable)) +
+  xlim(0,1) +
+  geom_boxplot() +
+  labs(x="Larval Area Components of Variation (SD)") +
+  theme_cowplot() +
+  theme(legend.position = "none")
+p1 <- plot_grid(density_plot,boxplot_plot,ncol = 1,align="v")
+p1
+}
+
+model_var(mod_output$cc$mod3$model$VCV,"Parent:Control Offspring:Control")
+model_var(mod_output$ce$mod3$model$VCV,"Parent:Control Offspring:Exposed")
+model_var(mod_output$ec$mod3$model$VCV,"Parent:Exposed Offspring:Control")
+model_var(mod_output$ee$mod3$model$VCV,"Parent:Exposed Offspring:Exposed")
+```
+
+### Take-aways 
+
+1) **Large residual variation** : We can see that residual variation is large compared to all other variance components.
+2) **Wide distributions for animal and dam** : In all cases the model struggles to consistently estimate the variance explained by animal and dam, leading to the broad distributions relative to the other variance components.
+
+```{r echo=F,fig.width=10,fig.height=10,warning=F}
+model_2d <- function(x,title){
+  ref <- data.frame(x)
+  ggplot(ref, aes(x=sqrt(animal),y=sqrt(damID))) + 
+  xlim(0,1) + ylim(0,1) +
+  geom_point(alpha=0.5) +
+  labs(x="Animal Variance Component (SD)",y="Dam Variance Component (SD)",title=title) + 
+  geom_density2d() + 
+  geom_abline(intercept = mean(sqrt(ref$damID)),slope=0,color="blue",size=1.5) +
+  geom_vline(xintercept=mean(sqrt(ref$animal)),color="green",size=1.5) +
+  geom_smooth(method='lm',colour="orange",size=1.5) +
+  geom_abline(int=0,slope=1,size=1.5) +
+  theme_cowplot() + 
+    theme(plot.title = element_text(hjust = 0.5))
+}
+
+p1 <- model_2d(mod_output$cc$mod3$model$VCV,"Parent:Control Offspring:Control")
+p2 <- model_2d(mod_output$ce$mod3$model$VCV,"Parent:Control Offspring:Exposed")
+p3 <- model_2d(mod_output$ec$mod3$model$VCV,"Parent:Exposed Offspring:Control")
+p4 <- model_2d(mod_output$ee$mod3$model$VCV,"Parent:Exposed Offspring:Exposed")
+
+plot_grid(p1,p2,p3,p4,nrow=2)
+```
+**Figure Caption**: Black line is 1:1 line, blue line is the mean maternal SD (y-axis), green is mean genetic SD (x-axis), orange is linear model fit using ```geom_smooth``` 
+
+### Take-aways
+
+1) Does appear to be a slightly negative relationship between the maternal and genetic variance components. This is indicates that perhaps part of the reason the distributions of the SDs for this two components are wide is partially due to the model struggling to handle the correlation between these two components?? Although the outliers SD estimate for dam (large values on the y-axis) do not appear to necessarily lead to a dramatic decrease in the genetic estimate.
 
 # Main Observations
 
