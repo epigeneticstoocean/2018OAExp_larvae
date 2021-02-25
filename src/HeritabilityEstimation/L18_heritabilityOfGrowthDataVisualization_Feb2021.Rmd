@@ -1,0 +1,272 @@
+---
+title: "Larval Growth Heritability Estimation"
+output:
+  github_document:
+    toc: true
+    toc_depth: 2
+---
+
+## Overview
+
+This is a summary for 
+## Data and Scripts
+```{r}
+mod_output <- readRDS("~/Desktop/GrowthHeritabilityEstimate.RDS")
+```
+
+**Links to Data and Scripts**
+
+## Libraries
+```{r}
+library(ggplot2)
+library(cowplot)
+library(knitr)
+library(rmarkdown)
+library(MCMCglmm)
+```
+
+# Summary of Models
+ 
+| Model | Fixed Effects | Random Effects | Description |
+|:------|:--------------|:---------------|:------------|
+| Model 1 | ~ 1 | ~ animal, dam, sire, Jar, and Seatable | Full Model (including sire which is not typically done) |
+| Model 2 | ~ 1 | ~ animal | Simply model | 
+| Model 3 | ~ 1 | ~ animal, dam, and Jar | Single experimental effect, jar |
+| Model 4 | ~ 1 | ~ animal, dam, and Seatable | Single experiment effect, Seatable |
+| Model 5 | ~ 1 | ~ animal and dam | Typical animal model with dam (no experimental effect) |
+| Model 6 | ~ 1 | ~ animal, dam, jar, and Seatable | Full model alternative (no sire) |
+
+# Parameterization
+
+All models used the same set of parameters. Prior and random effects varied for each model.
+
+* **Iterations** - 1,000,000
+* **Burn-in** - 10,000
+* **Thinning parameter** - 1,000
+
+## Priors
+
+The same prior was applied to each random effect, the specific type of prior depends on the model.
+
+* **Cauchy Prior** - Used in some heritability models. Favored when estimated variance of the components is small.
+  * Parameters (Same parameters used by Hadley et al. 2010 for this prior)
+    * V : 1
+    * nu : 1
+    * alpha.mu : 0
+    * alpha.V : 1000
+* **Inverse-Wilshart** - Standard uninformative prior used in many bayesian models. May misbehave when variance is small.
+  * Parameters
+    * V : 1
+    * nu : 0.002 (very small belief in prior means it should not inform posterior distribution)
+
+# Complete Summary Output Table
+
+**Note** : Model 4 and 5 were run twice for each data subset. The second use was performed using the family level summarized data (growth averaged by jar). This was done to examine the effect of estimating heritability on family level rather than individual level estimates. This approach was recent used by Tasoff et al. (2018) to look a family level heritability in Grunion in ambient and OA conditions.
+
+```{r echo=F}
+sumTab <- NULL 
+## Diagnostics
+for(i in mod_output){
+  for(j in i){
+    sumTab <- rbind(sumTab,j$summary)
+  }
+}
+sumTab$model[sumTab$model == "Model3"] <- rep(c("Model3","Model3_InvW"),time=4)
+sumTab$model[sumTab$model == "Model4"] <- rep(c("Model4","Model4_fam"),time=4)
+sumTab$model[sumTab$model == "Model5"] <- rep(c("Model5","Model5_fam"),time=4)
+kable(sumTab)
+```
+
+# Across Model Heritability Comparisons
+
+```{r echo=F,fig.width=12}
+sumTab$Parent_Env_Descriptive <- paste0("Parent_",sumTab$Parent_Env)
+sumTab$Offspring_Env_Descriptive <- paste0("Offspring_",sumTab$Offspring_Env)
+ggplot(sumTab,aes(model,animal_H2_mean,colour=model)) +
+  ylim(0,1) +
+  labs(y="Narrow-sense heritability",x="") +
+  facet_grid(rows=vars(Parent_Env_Descriptive),cols=vars(Offspring_Env_Descriptive)) +
+  geom_point() + 
+  geom_errorbar(aes(ymin=animal_H2_lower, ymax=animal_H2_upper)) +
+  theme_cowplot() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
+```
+
+### Main Takeaways
+
+1) Not including dam (and to lesser extend one or both of the experimental random effects) has a substantial impact on the genetic component in the model (i.e. dam and other random effects consume a substantial amount of the variance explained by the genetic component when included in the model).
+2) The two priors do not seem to alter our estimate of heritability.
+3) Measuring heritability at the family vs. individual level leads to a downward estimate of heritability compared to the model that uses individuals.
+
+# Variance and Heritability Comparisons for "Full Model" (Model 6) and "Best Model" (Model 3)
+
+```{r echo=F}
+sumTabSub <- subset(sumTab,sumTab$model == "Model3" | sumTab$model == "Model6")
+
+model <- c(sumTabSub$model,sumTabSub$model)
+treatment <- paste0("P-",sumTabSub$Parent_Env," O-",sumTabSub$Offspring_Env)
+treatment <- c(treatment,treatment)
+varComponent <- c(rep("genetic",times=nrow(sumTabSub)),rep("dam",times=nrow(sumTabSub)))
+meanH <- c(sumTabSub$animal_H2_mean,sumTabSub$dam_H2_mean)
+lowerH <- c(sumTabSub$animal_H2_lower,sumTabSub$dam_H2_lower)
+upperH <- c(sumTabSub$animal_H2_upper,sumTabSub$dam_H2_upper)
+
+df <- data.frame(model,treatment,varComponent,meanH,lowerH,upperH)
+
+ggplot(df,aes(x=treatment,y=meanH)) +
+  facet_grid(cols=vars(varComponent),rows=vars(model)) +
+  ylim(0,1) +
+  geom_point() +
+  geom_errorbar(aes(ymin=lowerH, ymax=upperH)) +
+  labs(y="Proportion of Variation",x="") +
+  theme_cowplot() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 25, vjust = 0.5, hjust=1))
+```
+
+# Main Observations
+
+1) Hard to draw many conclusions from the model. Mean heritability is low for all comparisons, but given the large credibility intervals around most of the variance components it is hard to draw conclusions.
+2) There isn't a clearly dominant variance component (e.g. genetic, maternal, or experimental), and it looks like the model struggles to consistently converge on estimates for each of the components given the large credibility intervals.
+3) Looking at the model diagnostics it looks like including Seatable is problematic, given the posterior distribution, although not including it in the model doesn't appear to impact heritability estimates much. As a result it seems like using a model with animal, dam, and jar may be the simplest, best model in this case (Model 3).
+
+# Future Directions
+
+1) Finish reading through Hadley literature to identify an other things to consider when parameterizing the model. Specifically, is there a way to improve the posterior distributions for animal and dam effects (so they appear more normally distributed).
+2) Add measure of parental methylation (when we have it).
+3) **Extend Goal** : Estimate parental relatedness and use kinship matrix rather than traditional pedigree to improve our ability to estimate heritability (right now the assumption is that all parents are unrelated, the first step is to check how true this is).
+
+
+# Model Diagnostics
+
+## Model 3 (Partial Model)
+```{r echo=F}
+## Diagnostics
+m1 <- mod_output$cc$mod3
+m2 <- mod_output$ce$mod3
+m3 <- mod_output$ec$mod3
+m4 <- mod_output$ee$mod3
+```
+
+### Data : Parent Control - Offspring Control
+```{r echo=F}
+m1$model_summary
+plot(m1$model$Sol,ask=F)
+autocorr.diag(m1$model$Sol)
+heidel.diag(m1$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m1$model$VCV,ask=F)
+autocorr.diag(m1$model$VCV)
+heidel.diag(m1$model$VCV)
+```
+
+### Data : Parent Control - Offspring Exposed
+```{r echo=F}
+m2$model_summary
+plot(m2$model$Sol,ask=F)
+autocorr.diag(m2$model$Sol)
+heidel.diag(m2$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m2$model$VCV,ask=F)
+autocorr.diag(m2$model$VCV)
+heidel.diag(m2$model$VCV)
+```
+
+### Data : Parent Exposed - Offspring Control
+```{r echo=F}
+m3$model_summary
+plot(m3$model$Sol,ask=F)
+autocorr.diag(m3$model$Sol)
+heidel.diag(m3$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m3$model$VCV,ask=F)
+autocorr.diag(m3$model$VCV)
+heidel.diag(m3$model$VCV)
+```
+
+### Data : Parent Exposed - Offspring Exposed
+```{r echo=F}
+m4$model_summary
+plot(m4$model$Sol,ask=F)
+autocorr.diag(m4$model$Sol)
+heidel.diag(m4$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m4$model$VCV,ask=F)
+autocorr.diag(m4$model$VCV)
+heidel.diag(m4$model$VCV)
+```
+
+## Model 6 (Full Model)
+```{r echo=F}
+## Diagnostics
+m1 <- mod_output$cc$mod7
+m2 <- mod_output$ce$mod7
+m3 <- mod_output$ec$mod7
+m4 <- mod_output$ee$mod7
+```
+
+### Data : Parent Control - Offspring Control
+```{r echo=F}
+m1$model_summary
+plot(m1$model$Sol,ask=F)
+autocorr.diag(m1$model$Sol)
+heidel.diag(m1$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m1$model$VCV,ask=F)
+autocorr.diag(m1$model$VCV)
+heidel.diag(m1$model$VCV)
+```
+
+### Data : Parent Control - Offspring Exposed
+```{r echo=F}
+m2$model_summary
+plot(m2$model$Sol,ask=F)
+autocorr.diag(m2$model$Sol)
+heidel.diag(m2$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m2$model$VCV,ask=F)
+autocorr.diag(m2$model$VCV)
+heidel.diag(m2$model$VCV)
+```
+
+### Data : Parent Exposed - Offspring Control
+```{r echo=F}
+m3$model_summary
+plot(m3$model$Sol,ask=F)
+autocorr.diag(m3$model$Sol)
+heidel.diag(m3$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m3$model$VCV,ask=F)
+autocorr.diag(m3$model$VCV)
+heidel.diag(m3$model$VCV)
+```
+
+### Data : Parent Exposed - Offspring Exposed
+```{r echo=F}
+m4$model_summary
+plot(m4$model$Sol,ask=F)
+autocorr.diag(m4$model$Sol)
+heidel.diag(m4$model$Sol)
+```
+
+```{r echo=F,fig.height=12,fig.width=10}
+plot(m4$model$VCV,ask=F)
+autocorr.diag(m4$model$VCV)
+heidel.diag(m4$model$VCV)
+```
+
