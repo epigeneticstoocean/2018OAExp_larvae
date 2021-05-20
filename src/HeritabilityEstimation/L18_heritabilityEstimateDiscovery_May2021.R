@@ -4,17 +4,14 @@
 # Description: In this script I run X models 
 
 
-
-
-
 #### Libraries ####
 library(AGHmatrix)
 library(MCMCglmm,verbose = F)
 library(dplyr,verbose = F)
-library(brms,verbose = F)
-library(rstan,verbose = F)
-options(mc.cores = parallel::detectCores())
-rstan_options(auto_write = TRUE)
+#library(brms,verbose = F)
+#library(rstan,verbose = F)
+#options(mc.cores = parallel::detectCores())
+#rstan_options(auto_write = TRUE)
 
 #### working directory ####
 setwd("~/Github/2018OAExp_larvae/") # Local
@@ -98,19 +95,23 @@ prior1.4<-list(R=list(V = 1, nu = 0.002),
                           G3=list(V = 1, nu = 0.002),
                           G4=list(V = 1, nu = 0.002)))
 
+prior2.3 <- list(G = list(G1 = list(V = diag(2), n = 1.002),
+                          G2 = list(V = diag(2), n = 1.002),
+                          G3 = list(V = diag(2), n = 1.002)),
+                 R = list(V = diag(2), n = 1.002))
 
 #### MCMCglmm ####
 # Defaults :
 #       Iterations - 5000000
-#       burnin - 10000
-#       thin - 1000
+#       burnin - 50000
+#       thin - 5000
 # NOTE : This are pretty conservative settings in line with previous publications and appear to work in most scenarios I have
 #         explored, but they DO take time to run.
 
 ## Model Functions ##
 
 # Function for running a single response variable with MCMCglmm
-MCMC_singleResponse <- function(pheno,A,name=NULL){
+MCMC_singleResponse <- function(pheno,A,response_variable,name=NULL){
   print(paste0("Starting MCMCglmm model - ",name,"...."))
   
   # Weird quark of mcmcglmm is doesn't like that there is a column in phenotype data called family, this needs to be removed
@@ -118,57 +119,48 @@ MCMC_singleResponse <- function(pheno,A,name=NULL){
   
   start <- Sys.time()
   print(paste0("Time started: ",start))
-  model  <- MCMCglmm(GrowthScale ~ 1,
-                                random = ~ animal + damID + JarID,
-                                family = "gaussian",
-                                prior = prior1.3,
-                                ginverse=list(animal=A),
-                                data = pheno,
-                                nitt = 10000,
-                                burnin = 1000,
-                                thin = 500)
-  
-  end <- Sys.time()
-  print(paste0("Time completed: ",start))
-  diff <- end-start
-  meta <- list(model="MCMCglmm",
-               response=c("Growth_scaled"),
-               fixed_factor=c("ParentTrt + JarTrt"),
-               random_factor=c("(1|gr(animal,cov=A)) + (1|damID) + (1|JarID)"),
-               time_complete=c(date()),
-               run_time=diff)
-  mod <- list(meta,model)
-  print(paste0("Saving MCMCglmm model - ",name,"...."))
-  saveRDS(mod,paste0("results/",substr(Sys.time(),1,10),"_MCMCglmm_",name,"_model.RDS"))
-}
-
-# Function for running a single response variable with MCMCglmm with family data
-MCMC_singleResponse_jar <- function(pheno,A,name=NULL){
-  print(paste0("Starting MCMCglmm model - ",name,"...."))
-  
-  # Weird quark of mcmcglmm is doesn't like that there is a column in phenotype data called family, this needs to be removed
-  if(sum(colnames(pheno) == "family")>0){pheno <- pheno[,which(colnames(pheno) != "family")]}
-  
-  start <- Sys.time()
-  print(paste0("Time started: ",start))
-  model  <- MCMCglmm(GrowthScale ~ 1,
-                     random = ~ animal + damID,
-                     family = "gaussian",
-                     prior = prior1.2,
-                     ginverse=list(animal=A),
-                     data = pheno,
-                     nitt = 10000,
-                     burnin = 1000,
-                     thin = 500)
-  
-  end <- Sys.time()
-  print(paste0("Time completed: ",start))
-  diff <- end-start
-  meta <- list(model="MCMCglmm",
-               fixed_factor=c("ParentTrt + JarTrt"),
-               random_factor=c("(1|gr(animal,cov=A)) + (1|damID)"),
-               time_complete=c(date()),
-               run_time=diff)
+  if(response_variable == "GrowthScale"){
+    model  <- MCMCglmm(GrowthScale ~ 1,
+                       random = ~ animal + damID + JarID,
+                       family = "gaussian",
+                       prior = prior1.3,
+                       ginverse=list(animal=A),
+                       data = pheno,
+                       nitt = 5000000,
+                       burnin = 50000,
+                       thin = 5000)
+    
+    end <- Sys.time()
+    print(paste0("Time completed: ",start))
+    diff <- end-start
+    meta <- list(model="MCMCglmm",
+                 response=c("Growth_scaled"),
+                 fixed_factor=c("ParentTrt + JarTrt"),
+                 random_factor=c("(1|gr(animal,cov=A)) + (1|damID) + (1|JarID)"),
+                 time_complete=c(date()),
+                 run_time=diff)
+  }
+  if(response_variable == "PDR"){
+    model  <- MCMCglmm(PDRScale ~ 1,
+                       random = ~ animal + damID + JarID,
+                       family = "gaussian",
+                       prior = prior1.3,
+                       ginverse=list(animal=A),
+                       data = pheno,
+                       nitt = 5000000,
+                       burnin = 50000,
+                       thin = 5000)
+    
+    end <- Sys.time()
+    print(paste0("Time completed: ",start))
+    diff <- end-start
+    meta <- list(model="MCMCglmm",
+                 response=c("PDR_scaled"),
+                 fixed_factor=c("ParentTrt + JarTrt"),
+                 random_factor=c("(1|gr(animal,cov=A)) + (1|damID) + (1|JarID)"),
+                 time_complete=c(date()),
+                 run_time=diff)
+  }
   mod <- list(meta,model)
   print(paste0("Saving MCMCglmm model - ",name,"...."))
   saveRDS(mod,paste0("results/",substr(Sys.time(),1,10),"_MCMCglmm_",name,"_model.RDS"))
@@ -177,58 +169,33 @@ MCMC_singleResponse_jar <- function(pheno,A,name=NULL){
 # Function for running bivariate response model on mcmglmm
 MCMC_bivariateResponse <- function(pheno,A,name=NULL){
   print(paste0("Starting MCMCglmm model - ",name,"...."))
-  start <- Sys.time()
-  print(paste0("Time started: ",start))
-  model  <- MCMCglmm(GrowthScale ~ 1,
-                     random = ~ animal + damID + JarID,
-                     family = "gaussian",
-                     prior = prior1.3,
-                     ginverse=list(animal=A),
-                     data = pheno,
-                     nitt = 10000,
-                     burnin = 1000,
-                     thin = 500)
-  
-  end <- Sys.time()
-  print(paste0("Time completed: ",start))
-  diff <- end-start
-  meta <- list(model="MCMCglmm",
-               fixed_factor=c("ParentTrt + JarTrt"),
-               random_factor=c("(1|gr(animal,cov=A)) + (1|damID) + (1|JarID)"),
-               time_complete=c(date()),
-               run_time=diff)
-  mod <- list(meta,model)
-  print(paste0("Saving MCMCglmm model - ",name,"...."))
-  saveRDS(mod,paste0("results/",substr(Sys.time(),1,10),"_MCMCglmm_",name,"_model.RDS"))
-}
-
-# Function for running a bivariate response variable with MCMCglmm with family data
-MCMC_bivariateResponse_jar <- function(pheno,A,name=NULL){
-  print(paste0("Starting MCMCglmm model - ",name,"...."))
   
   # Weird quark of mcmcglmm is doesn't like that there is a column in phenotype data called family, this needs to be removed
   if(sum(colnames(pheno) == "family")>0){pheno <- pheno[,which(colnames(pheno) != "family")]}
   
   start <- Sys.time()
   print(paste0("Time started: ",start))
-  model  <- MCMCglmm(GrowthScale ~ 1,
-                     random = ~ animal + damID,
-                     family = "gaussian",
-                     prior = prior1.2,
+  model  <- MCMCglmm(cbind(GrowthScale,PDRScale) ~ trait - 1,
+                     random = ~ us(trait):animal + us(trait):damID + us(trait):JarID,
+                     rcov = ~us(trait):units,
+                     family = c("gaussian", "gaussian"),
+                     prior = prior2.3,
                      ginverse=list(animal=A),
                      data = pheno,
-                     nitt = 10000,
-                     burnin = 1000,
-                     thin = 500)
+                     nitt = 5000000,
+                     burnin = 50000,
+                     thin = 5000)
   
   end <- Sys.time()
   print(paste0("Time completed: ",start))
   diff <- end-start
   meta <- list(model="MCMCglmm",
+               response=c("Bivariate"),
                fixed_factor=c("ParentTrt + JarTrt"),
-               random_factor=c("(1|gr(animal,cov=A)) + (1|damID)"),
+               random_factor=c("(1|gr(animal,cov=A)) + (1|damID) + (1|JarID)"),
                time_complete=c(date()),
                run_time=diff)
+  
   mod <- list(meta,model)
   print(paste0("Saving MCMCglmm model - ",name,"...."))
   saveRDS(mod,paste0("results/",substr(Sys.time(),1,10),"_MCMCglmm_",name,"_model.RDS"))
@@ -237,13 +204,23 @@ MCMC_bivariateResponse_jar <- function(pheno,A,name=NULL){
 #### Running the models
 
 # Individual observations
-MCMC_singleResponse(cc,A_ind_mcmc,"cc")
-MCMC_singleResponse(ce,A_ind_mcmc,"ce")
-MCMC_singleResponse(ec,A_ind_mcmc,"ec")
-MCMC_singleResponse(ee,A_ind_mcmc,"ee")
+
+# Growth
+MCMC_singleResponse(cc,A_ind_mcmc,response_variable="GrowthScale","cc_growth")
+MCMC_singleResponse(ce,A_ind_mcmc,response_variable="GrowthScale","ce_growth")
+MCMC_singleResponse(ec,A_ind_mcmc,response_variable="GrowthScale","ec_growth")
+MCMC_singleResponse(ee,A_ind_mcmc,response_variable="GrowthScale","ee_growth")
+# PDR
+MCMC_singleResponse(cc,A_ind_mcmc,response_variable="PDR","cc_PDR")
+MCMC_singleResponse(ce,A_ind_mcmc,response_variable="PDR","ce_PDR")
+MCMC_singleResponse(ec,A_ind_mcmc,response_variable="PDR","ec_PDR")
+MCMC_singleResponse(ee,A_ind_mcmc,response_variable="PDR","ee_PDR")
 
 # Family level observations
-MCMC_singleResponse_jar(pheno_family,)
+MCMC_bivariateResponse(cc,A_ind_mcmc,"cc_bi")
+MCMC_bivariateResponse(ce,A_ind_mcmc,"ce_bi")
+MCMC_bivariateResponse(ec,A_ind_mcmc,"ec_bi")
+MCMC_bivariateResponse(ee,A_ind_mcmc,"ee_bi")
 
 #### BRMS ####
 ## TO DO
