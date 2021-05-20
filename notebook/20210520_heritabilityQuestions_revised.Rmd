@@ -1,0 +1,338 @@
+---
+title: "Estimating heritability and maternal effects in larval growth from an intergenerational OA experiment"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 3
+    pandoc_args: "--webtex"
+  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(ggplot2)
+library(cowplot)
+library(viridisLite)
+library(lme4)
+```
+
+```{r echo=F}
+fam <- readRDS("~/Github/2018OAExp_larvae/input_files/FamilyHeritabilityData.RDS")
+jr <- readRDS("~/Github/2018OAExp_larvae/input_files/JarHeritabilityData.RDS")
+ind <- readRDS("~/Github/2018OAExp_larvae/input_files/IndHeritabilityData.RDS")
+
+pheno <- ind$pheno
+pheno <- pheno[!is.na(pheno$JarpHNBS),]
+ped <- ind$ped
+
+pheno_jar <- jr$pheno
+pheno_fam <- fam$pheno
+```
+
+## Motivation
+
+In 2018 we conducted an ocean acidification exposure experiment with the aim of looking at the effects of inter-generational OA on oyster larvae growth. In this experiment we exposed adult oysters to ambient or OA conditions and then generated offspring from adults in both conditions and exposed them to both OA and ambient treatments. We found that offspring treatment and parental condition both impacted larvae growth (figure below). As a follow-up to this work we are interested in understanding the additive genetic and non-genetic sources of variation that explain the variance (differences) we see in larval growth, then leverage this information to better understand the evolutionary potential of larval growth in response to OA and whether or not prior parental exposure to OA effects the evolutionary potential. 
+
+```{r echo=F}
+pheno$jarNum[pheno$JarTrt == "Control"] <- 0
+pheno$jarNum[pheno$JarTrt == "Exposed"] <- 1
+
+gpdCC_min <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Control" & pheno$ParentTrt == "Control"],0.025) 
+gpdCC_max <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Control" & pheno$ParentTrt == "Control"],0.975)
+gpdCE_min <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Control" & pheno$ParentTrt == "Exposed"],0.025) 
+gpdCE_max <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Control" & pheno$ParentTrt == "Exposed"],0.975)
+
+gpdEC_min <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Exposed" & pheno$ParentTrt == "Control"],0.025) 
+gpdEC_max <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Exposed" & pheno$ParentTrt == "Control"],0.975)
+gpdEE_min <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Exposed" & pheno$ParentTrt == "Exposed"],0.025) 
+gpdEE_max <- quantile(pheno$GrowthPerDay[pheno$JarTrt == "Exposed" & pheno$ParentTrt == "Exposed"],0.975) 
+
+
+polyC <- data.frame(x=c(-0.01,1.01,1.01,-0.01),y=c(gpdCC_min,gpdEC_min,gpdEC_max,gpdCC_max),ParentTrt="Control")
+polyE <- data.frame(x=c(-0.01,1.01,1.01,-0.01),y=c(gpdCE_min,gpdEE_min,gpdEE_max,gpdCE_max),ParentTrt="Exposed")
+poly <- rbind(polyC,polyE)
+poly$ParentTrt <- as.factor(poly$ParentTrt)
+
+polyC <- data.frame(x=c(max(pheno$JarpHNBS),min(pheno$JarpHNBS),min(pheno$JarpHNBS),max(pheno$JarpHNBS)),y=c(gpdCC_min,gpdEC_min,gpdEC_max,gpdCC_max),ParentTrt="Control")
+polyE <- data.frame(x=c(max(pheno$JarpHNBS),min(pheno$JarpHNBS),min(pheno$JarpHNBS),max(pheno$JarpHNBS)),y=c(gpdCE_min,gpdEE_min,gpdEE_max,gpdCE_max),ParentTrt="Exposed")
+polyB <- rbind(polyC,polyE)
+polyB$ParentTrt <- as.factor(polyB$ParentTrt)
+```
+
+```{r echo=F,fig.height=10,fig.width=10}
+p1 <- ggplot(pheno,aes(y=GrowthPerDay,x=JarpHNBS,group=ParentTrt)) +
+  #facet_grid(cols=vars(ParentTrt)) +
+  geom_polygon(data=polyB,aes(x,y,fill=ParentTrt),alpha=0.1) +
+  geom_point(aes(colour=JarTrt)) + 
+  geom_smooth(aes(linetype=ParentTrt,colour=ParentTrt),method="lm",formula='y~x',se = F) + 
+  theme_cowplot() +
+  scale_fill_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  scale_linetype_manual(values=c("twodash", "dotted")) + 
+  scale_colour_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  labs(y="Larval Growth",x="Offspring Treatment (pH NBS)","Larval") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5))
+p1
+```
+
+*Larvae Growth as a function of offspring and parental treatment. A) Larval growth by offspring environmental pH. Boxes represent the 95% quantile for offspring, separated by parental treatment. Boxes represent the 95% quantile for offspring.*
+
+## Main Experimental Factors
+
+**Response Variable**
+
+* Larval Growth
+* Perimeter - Diameter Ratio (PDR, morphology)
+
+**Explanatory Variable**
+
+* Offspring environment (factor or covariate)
+* Parental environment (factor)
+* Maternal effect (ID) 
+* Parental methylation fingerprint
+
+# Main Questions
+
+## Main Question 1 : What is the heritability of *C. virginica* larval growth and morphology and what are the significant variance components that determine larval growth and morphology variance in the animal model?
+
+## Main Question 2 : What is the effect of including parental methylation in the animal model and does it explain variation in larval phenotype not otherwise explained by additive genetic variation or maternal effects?
+
+# Versions of the data available
+
+There are two main types of forms of collected data- (1) **individual** (e.g., growth and morphology), and (2) **jar-level** (e.g., survivorship). Moreover, family-level data was summarized from individual data in order to calculate the reaction norms of each family (since we didn't have multiple measures of response from the same individual in different environments) using linear regression. 
+
+### Individual observations
+
+Number of observations (total): 2698
+
+```{r echo=F}
+table(pheno$JarTrt,pheno$ParentTrt)
+```
+*Off Env. on y-axis, Parent Env. on x-axis*
+
+* Advantages
+  * Largest dataset with highest replication
+  * No using summarized data
+* Limitations
+  * Can only look at growth and morphology measures
+  * Can't examine jar and family level metrics (e.g., survivorship and reaction norms)
+  * Can't examine the same phenotype in multiple offspring environments using a bivariate model to evaluate genetic covariance
+
+#### Visualizaton of Additive Genetic and Maternal Effects on Growth and Morphology (PDR)
+
+**Growth**
+```{r echo=F,fig.height=8,fig.width=10}
+p1 <- ggplot(pheno,aes(y=GrowthPerDay,x=family,colour=ParentTrt)) +
+  facet_grid(rows = vars(JarTrt)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_fill_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  scale_linetype_manual(values=c("twodash", "dotted")) + 
+  scale_colour_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  labs(y="Growth",x="Family") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5),
+        axis.text.x = element_text(angle=90,hjust=0.4,vjust=0.5)) 
+p1
+
+p1 <- ggplot(pheno,aes(y=GrowthPerDay,x=damID,colour=ParentTrt)) +
+  facet_grid(rows = vars(JarTrt)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_fill_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  scale_linetype_manual(values=c("twodash", "dotted")) + 
+  scale_colour_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  labs(y="Growth",x="dam") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5),
+        axis.text.x = element_text(angle=90,hjust=0.4,vjust=0.5)) 
+p1
+```
+
+**PDR**
+```{r echo=F,fig.height=8,fig.width=10}
+p1 <- ggplot(pheno,aes(y=PerimDiamRat,x=family,colour=ParentTrt)) +
+  facet_grid(rows = vars(JarTrt)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_fill_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  scale_linetype_manual(values=c("twodash", "dotted")) + 
+  scale_colour_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  labs(y="PDR",x="Family") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5),
+        axis.text.x = element_text(angle=90,hjust=0.4,vjust=0.5))
+p1
+p1 <- ggplot(pheno,aes(y=PerimDiamRat,x=damID,colour=ParentTrt)) +
+  facet_grid(rows = vars(JarTrt)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_fill_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  scale_linetype_manual(values=c("twodash", "dotted")) + 
+  scale_colour_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  labs(y="PDR",x="dam") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5),
+        axis.text.x = element_text(angle=90,hjust=0.4,vjust=0.5))
+p1
+```
+    
+### Jar-level summary observations
+
+Number of observations (total): 270
+
+```{r echo=F}
+table(pheno_jar$JarTrt,pheno_jar$ParentTrt)
+```
+*Off Env. on y-axis, Parent Env. on x-axis*
+
+* Advantages
+  * Can use bivariate animal model to examine genetic covariance between growth/morphology and survivorship
+* Limitations
+    * Data summarized (averaged) by jar
+    * Still can look at reaction norms or examine the same phenotype in multiple offspring env. using bivariate model
+
+#### Visualizaton of Survivorship
+
+```{r echo=F,fig.height=10,fig.width=10}
+p1 <- ggplot(pheno_jar,aes(y=LarvaeSurvived,x=JarpHNBS,group=ParentTrt)) +
+  geom_point(aes(colour=JarTrt)) + 
+  geom_smooth(aes(linetype=ParentTrt,colour=ParentTrt),method="lm",formula='y~x',se = F) + 
+  theme_cowplot() +
+  scale_fill_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  scale_linetype_manual(values=c("twodash", "dotted")) + 
+  scale_colour_manual(labels=c("Control","Exposed"),values=c("cadetblue","tomato")) +
+  labs(y="Survivorship",x="Offspring Treatment (pH NBS)") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5))
+p1
+
+p1 <- ggplot(pheno_jar,aes(y=Growth,x=LarvaeSurvived,group=interaction(JarTrt,ParentTrt),colour=interaction(JarTrt,ParentTrt))) +
+  geom_point() +
+  theme_cowplot() +
+  labs(y="Growth",x="Survivorship") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5))
+p1
+
+p1 <- ggplot(pheno_jar,aes(y=PDR,x=LarvaeSurvived,group=interaction(JarTrt,ParentTrt),colour=interaction(JarTrt,ParentTrt))) +
+  geom_point() +
+  theme_cowplot() +
+  labs(y="PDR",x="Survivorship") +
+  theme(axis.ticks.x = element_blank(),plot.title = element_text(hjust=0.5))
+p1
+```
+
+### Family-level summary observations
+
+Number of observations (total): 45
+
+```{r echo=F}
+table(pheno_fam$ParentTrt)
+```
+
+* Advantages
+  * Can look at heritability of reaction norms (slope) 
+  * Can examine genetic covariance in the same trait among offspring environments using bivariate model
+* Limitations
+    * Data summarized (averaged) by family and linear regression used to estimate reactions norm slopes.
+
+### Visualizing the data
+
+**Reaction norm slope by parental treatment**
+```{r echo=F, fig.height=10,fig.width=10}
+p1<-ggplot(pheno_fam,aes(y=Slope_growth,x=ParentTrt,group=ParentTrt,colour=ParentTrt)) + 
+  geom_point() + 
+  theme_cowplot() + 
+  theme(legend.position = "none") +
+  labs(x="Parent Treatment",y="Growth Sensitivity (slope)")
+
+p2<-ggplot(pheno_fam,aes(y=Intercept_growth + Slope_growth*pheno_fam$pH_NBS_ambient,x=ParentTrt,colour=ParentTrt)) + 
+  geom_point() + 
+  theme_cowplot() + 
+  theme(legend.position = "none") +
+  labs(x="Parent Treatment",y="Predicted Growth at Ambient")
+
+plot_grid(p1,p2,nrow=1)
+
+#out <- lm(Slope_growth~ParentTrt,data=pheno_fam)
+#summary(out)
+
+#temp <- pheno_fam[!is.na(pheno_fam$pH_NBS_ambient),]
+#out <- lm((Intercept_growth + Slope_growth*pH_NBS_ambient)~ParentTrt,data=temp)
+#summary(out)
+```
+
+**Reaction norm slope vs. prediction at ambient**
+```{r echo=F, fig.height=10,fig.width=10}
+ggplot(pheno_fam,aes(x=Intercept_growth + Slope_growth*pheno_fam$pH_NBS_ambient,y=Slope_growth,group=ParentTrt,colour=ParentTrt)) + 
+  geom_point() + 
+  geom_smooth(method="lm") +
+  theme_cowplot() + 
+  labs(x="Predicted Growth at Ambient",y="Growth Sensitivity (slope)")
+```
+
+**Survival vs. Reaction norm slope**
+```{r echo=F, fig.height=10,fig.width=10}
+ggplot(pheno_fam,aes(x=prop_survived,y=Slope_growth,group=ParentTrt,colour=ParentTrt)) + 
+  geom_point() + 
+  geom_smooth(method="lm") +
+  theme_cowplot() + 
+  labs(x="Proportion Survived in OA",y="Growth Sensitivity (slope)")
+```
+
+**Survival vs. Growth**
+```{r echo=F, fig.height=10,fig.width=10}
+ggplot(pheno_fam,aes(x=prop_survived,y=diffGrowthScaled,group=ParentTrt,colour=ParentTrt)) + 
+  geom_point() + 
+  geom_smooth(method="lm") +
+  theme_cowplot() + 
+  labs(x="Proportion Survived in OA",y="Difference in Growth (Exposed-Control)")
+```
+
+
+# Steps For Each Question
+
+## Question 1 
+
+What is the heritability of *C. virginica* larval growth and morphology and what are the significant variance components that determine larval growth and morphology variance in the animal model?
+
+### Individual Summary Data
+
+#### Step 1 - Examine EACH response variable using separate models for EACH parent-offspring environment combination
+
+$Phenotype = u + (1|animal) + (1|damID) + (1|JarID)$
+
+**Rationale** : In preliminary runs of the model we saw heritability seemed to slightly differ among parent AND treatment combinations. If we include offspring environment or parent environment as covariate this would make it difficult to see this interaction in our heritability estimate. 
+  
+#### Step 2 - Examine EACH response variable separately for EACH parent treatment and INCLUDE offspring as covariate.
+
+$P = u + offspringEnv_{pH} + (1|animal) + (1|damID) + (1|JarID)$
+
+**Rationale**: This gives us more power to compare differences in heritability depending on parental condition
+
+#### Step 3 - Examine BOTH response variables (growth and morphology) together in bivariate model for EACH parent-offspring environment combination
+
+$cov(P_{Growth},P_{PDR}) = u + (1|animal) + (1|damID) + (1|JarID)$
+
+#### Step 4 - Examine BOTH response variables (growth and morphology) together in bivariate model foor EACH parent treatment and INCLUDE offspring as covariate.
+
+$cov(P_{Growth},P_{PDR}) = u + offspringEnv_{pH} + (1|animal) + (1|damID) + (1|JarID)$
+
+
+### Jar-Level Summary Data
+
+#### Step 1 - Examine heritability of survivorship and its genetic covariance with growth or morphology using separate bivariate models for EACH response variable (growth or PDR) for EACH parent-offspring environment combination
+
+$cov(P_{Survivor},P_{G}) = u + (1|animal) + (1|damID) + (1|JarID)$
+
+## Question 2
+
+What is the effect of including parental methylation in the animal model and does it explain variation in larval phenotype not otherwise explained by additive genetic variation or maternal effects?
+
+#### Step 1 - Estimate a DNA methylation similarity matrix based on sire and dames separately (i.e., maternal vs paternal methylation), then create a single DNA methylation similarity matrix based on the parentl methylation mid-point for each CpG.
+
+#### Step 2 - Perform same individual-level comparisons as above but including DNA methylation similarity matrices
+
+**No offspring env covariate**
+$P_{Growth} = u + (1|animal) + (1|methylation_S) + (1|methylation_D) + (1|damID) + (1|JarID)$
+
+**With offspring env. covariate**
+$P_{Growth} = u + offspringEnv_{pH} + (1|animal) + (1|methylation_S) + (1|methylation_D) + (1|damID) + (1|JarID)$
+
+
+

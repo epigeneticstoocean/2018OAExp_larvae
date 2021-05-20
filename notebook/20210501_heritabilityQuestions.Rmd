@@ -96,7 +96,6 @@ plot_grid(p2,p1,nrow = 2,rel_heights = c(0.6,0.4),labels = c("A","B"))
 
 # Questions
 
-
 ### Q1 - What is the heritability of larvae growth in *C. virginica*?
 
 * The main objective of this paper is to estimate heritability. This is a numeric quantity that describes the proportion of total phenotypic variation that is due to additive genetic variation and thus describes how quickly a population can respond to a unit of selection (Falconer & Mackay, 1996). Importantly, factors that can impact phenotypic variation (e.g. the environment) are also expected to influence estimates of heritability. Consequently, evaluating heritability within the context of current and future environments can give insights into the evolutionary potential of a phenotype. 

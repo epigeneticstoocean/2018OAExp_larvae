@@ -109,17 +109,20 @@ h2_mcmc  <- data.frame(mean = mean(h2_mcmc_object),
 
 ## BRMS  
 ```{r eval=F}
+
+
 # ped matrix needs to have 0s for missing values NOT NAs
-  A  <- Amatrix(ped)
+ped[is.na(ped)] <-  0
+A  <- Amatrix(ped)
   
   # Run model
-  model_brms <- brm(scaled_pheno ~ 1 + (1|animal),
+model_brms2 <- brm(GrowthScale ~ ParentTrt + JarTrt + (1|gr(animal,cov=A)) + (1|damID) + (1|JarID),
                     data = pheno,
                     family = gaussian(),
-                    cov_ranef = list(animal = A),
-                    chains = 4,
-                    cores = 1,
-                    iter = 2000)
+                    data2 = list(A = A),
+                    chains = 1,
+                    cores = 4,
+                    iter = 1000)
 
 # Examine posterior distribution
 posterior_brms <- posterior_samples(model_brms,
@@ -130,7 +133,7 @@ h2_brms  <- posterior_brms[,1]^2 /
   (posterior_brms[,1]^2 + posterior_brms[,2]^2)
 
 # Mean heritability for all samples
-h2_brms  <- data.frame(mean = mean(h2_brms),
+    <- data.frame(mean = mean(h2_brms),
                        lower = quantile(h2_brms, 0.025),
                        upper = quantile(h2_brms, 0.975),
                        method = "BRMS",

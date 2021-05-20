@@ -3,6 +3,7 @@ title: "Estimating plasticity of larvae responses to OA"
 output: 
   github_document:
     toc: true
+    pandoc_args: "--webtex"
 editor_options: 
   chunk_output_type: console
 ---
@@ -12,74 +13,267 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r, include=F}
+library(knitr)
 library(MCMCglmm)
 library(ggplot2)
 library(ggpubr)
 library(cowplot)
 library(dplyr)
 library(reshape2)
+library(lme4)
+library(lmerTest)
 ```
 
-## Overview  
-With the 2018 larval data I think we have the potential to estimate both traditional heritability of phenotypic variance and heritability of plasticity. I haven't seen this frequently discussed in the literature from the perspective of heritability, but thinking of plasticity as the slope of the reaction norm is common in other areas of evolutionary biology. Given that we split individuals from each parental cross into both larval control and exposed environments, we should have a simple two environment reaction norm for each cross. Below I discuss two approaches for slope estimation, which could subsequently be used as a response variable with an animal model to estimate heritability of plasticity. 
+## Overview
 
+From our 2018 larval data we calculated a number of offspring variables at either the individual (e.g., growth) or jar (e.g., mortality) level of replication. Moreover, due to our design we have measures of each phenotype in both ambient and OA conditions, which we could think about as a family level reaction norm (we did not measure the same individual in multiple environments). Given this design I think it would be interesting to look at family-level estimates of plasticity and use the estimate of plasticity in an animal model (as the response variable) to estimate the heritability of plasticity.
 
 **Larval Data**
 ```{r}
-jr <- readRDS("~/Github/2018OAExp_larvae/input_files/JarHeritabilityData.RDS")
+jr <- readRDS("~/Github/2018OAExp_larvae/input_files/OLD/JarHeritabilityData.RDS")
 ind <- readRDS("~/Github/2018OAExp_larvae/input_files/IndHeritabilityData.RDS")
 ```
 
 ```{r include=F}
+pheno <- ind$pheno
+pheno$family <- paste(pheno$damID,pheno$sireID,sep="_")
+pheno_summary <- pheno %>% 
+  group_by(ParentTrt,JarTrt) %>% 
+  summarise(families = length(unique(family)),
+            jars = length(unique(JarID)),
+            averageJarsPerFamily=length(unique(JarID))/length(unique(family)),
+            animals=length(animal),
+            averageAnimalPerFamily=length(animal)/length(unique(family)),
+            averageAnimalPerJar=length(animal)/length(unique(JarID)))
+```
+
+```{r echo=F}
+kable(pheno_summary)
+```
+
+### Sample Summary
+
+**Individual animal summary**
+
+We have **2698** individual-level measures with approximately **30** observations per family and **10** observations per replicate jars.
+
+* Measures - larval size and growth parameters (growth per day, perimeter, diameter, etc)
+
+**Family observation summary**
+
+We have **270** family-level measures for **45** unique families with an average of **3** observations for **2** different environments (**6** total observations per family).
+
+* Measures - Mortality, abnormality, cilia
+* Estimates - plasticity (slope of regression)
+
+```{r include=F}
 jrp <- jr$pheno
 jrp$parentalComb <- paste(jrp$damID,jrp$sireID,sep="_")
+jrp$family <- paste(jrp$damID,jrp$sireID,sep="_")
 jrp %>% group_by(parentalComb,JarTrt) %>% summarise(ParentTrt=unique(ParentTrt),Growth=mean(Growth)) -> jrp_summary
-jrp %>% group_by(parentalComb) %>% summarise(ParentTrt=unique(ParentTrt)) -> jrp_pcombo
+jrp %>% group_by(family) %>% summarise(ParentTrt=unique(ParentTrt)) -> jrp_pcombo
 ```
 
 ### Initial Visualization of Data
 
-Here we the estimated growth for each jar by larval treatment (x-axis) and facet by parental treatment. You can see that OA has a significant effect on larvae growth and parental treatment also seems to impact growth in both treatments.
+Here we the estimated growth for each jar by larval treatment (x-axis) and facet by parental treatment. You can see that larval environment has a significant effect on larvae growth and parental treatment also seems to impact growth in both treatments.
 
 ```{r}
 ggplot(jrp,aes(x=JarTrt,y=Growth,colour=JarTrt)) + 
   facet_grid(.~ParentTrt) + 
   geom_boxplot() +
+  scale_color_manual(values=c("turquoise","coral")) +
   theme_cowplot() + 
   labs(x="Larval Environment",y="Larval Growth","Growth by Jar")
 ```
 
 Next, we summarize the mean growth among replicate jars (n approx. = 3) and use grey lines to show the phenotypic plasticity (slope) of each family cross. This was possible because zygotes created from parental crosses were split with half going into a larval control treatment and half going into an exposed treatment.
 
-```{r}
+```{r echo=F}
 ggpaired(jrp_summary, x = "JarTrt", y = "Growth",id="parentalComb",
-         color = "JarTrt", line.color = "gray", line.size = 0.4,facet.by = "ParentTrt") + 
+         color = "JarTrt", line.color = "gray", line.size = 0.4,facet.by = "ParentTrt") +
+  scale_color_manual(values=c("turquoise","coral")) +
   labs(x = "Larval Environment" , y = "Larval Growth") +
   theme(legend.position = "none")
 ```
 
 I think it makes sense to think of these grey lines as family specific reaction norms, with the slope of each family representing a measure of phenotypic plasticity of a particular phenotype (e.g. growth) in response to a specific environmental stress (e.g. OA). In turn, to examine the heritability of plasticity it might be appropriate to estimate this slope for each family, and use this as our response variable in the animal model.
 
-Unfortunately, I have not see much literature on this approach, but I can think of two ways in which we can estimate the slope for each cross:  
-* **(Option 1)** : Use linear regresion to estimate the slope for each family.  
+```{r echo=F}
+ggplot(pheno,aes(x=JarTrt,y=GrowthPerDay)) + 
+  facet_grid(cols = vars(ParentTrt)) +
+  geom_smooth(aes(group=family,colour=damID),method="lm") +
+  scale_color_viridis_d() +
+  labs(x = "Larval Environment" , y = "Larval Growth") +
+  theme_cowplot()
+```
+
+
+# Estimating reaction norms with individual level summary values
+
+**Thoughts on estimating plasticity / reaction norms from [Weis and Gorman 1990](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1558-5646.1990.tb03807.x)**
+
+*Excerpt 1 - Description of family-level design*
+However, reaction norms can be measured by rearing genotypic replicates, members of an inbred strain, or siblings, across a range of values for some relevant environmental factor (e.g., Clausen et al.,
+1958; Gupta and Lewontin, 1982; Via,1984a).Because they are not properties of individuals, the intensity of selection on reaction norms cannot be directly evaluated from measures of individual selection. Instead, selection must be evaluated by the differential survivorship and fecundity of genetically related groups (i.e., clones, inbred strains, sibships, etc.). Thus the intensity of
+selection on reaction norms is not measured in terms of phenotypic values, but in genotypic or breeding values (Lynch and Gabriel, 1987; Rausher and Simms, 1989). 
+
+*Excerpt 2 -  General description of the model*
+What is meant by the distribution of reaction norms? This is easily understood if reaction norms are defined as algebraic functions, such that:
+$$P_i = q(e | g_i)$$
+The phenotype, $P_i$ produced by individuals of a given genotype, $g_i$ varies as a function, $q$, of the environment experienced during development, $e$. The parameters of such a function would incorporate information on the position, slope, shape, curvature, etc., of the reaction norm. For instance, if reaction norms are linear, they can be characterized by their slope and elevation. The
+distribution of reaction norms can then be considered as the multivariate distribution of reaction norm parameters. When reaction norms are quantified in this way, selection on the different parameters of the reaction norm can be evaluated separately (e.g., Lynch and Gabriel, 1987).
+
+*Excerpt 3 - Note on estimating heritability*
+The heritability of reaction norm elevation and slope are equal to twice the proportion of phenotypic variance explained by the family variance and the family-specific slope variance components respectively (Scheiner and Lyman, 1989).
+
+## Linear regression
+
+**Example of single family**
+
+```{r}
+hist(pheno$JarpHNBS)
+abline(v=mean(pheno$JarpHNBS,na.rm=T),col="red")
+abline(v=median(pheno$JarpHNBS,na.rm=T),col="red")
+
+pheno$jarpHScale <- pheno$JarpHNBS - mean(pheno$JarpHNBS,na.rm=T)
+pheno_single <- pheno[pheno$family=="CF03_CM03",]
+
+ggplot(pheno_single,aes(x=JarpHNBS,y=GrowthPerDay,group=family,colour=family)) + 
+  geom_point() +
+  geom_smooth(method="lm",formula='y~x') +
+  geom_abline(slope=5.6496,intercept=-40.9134) +
+  geom_abline(slope=4.610534,intercept=-4.610534,colour="red") +
+  theme_cowplot() +
+  labs(x= "Offspring Environment (pH)",y="Growth Per Day",title="Reaction norm for family: CF03_CM03") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+model_single_noR <- glm(GrowthPerDay~JarpHNBS,data=pheno_single)
+model_single_R <- lmer(GrowthPerDay~JarpHNBS + (1|JarID),data=pheno_single)
+
+
+summary(model_single_noR)
+summary(model_single_R)
+
+model_comp <- anova(model_single_noR,model_single_R,test = "LRT")
+model_comp
+```
+
+```{r}
+
+coln <- c("JarID","JarpCO2_SW")
+jrp_red <- subset(jrp,select=coln)
+phenoID <- left_join(pheno,jrp_red,by="JarID")
+phenoID <-  phenoID[!is.na(phenoID$family),]
+y <- "GrowthPerDay" # Response Variable
+x <- "jarpHScale" # Explanatory variable
+r <- "JarID" #Random effect
+
+# Fits model for each family
+slp <- NULL
+inter <- NULL
+for( i in 1:length(unique(phenoID$family))){
+    temp <- phenoID[phenoID$family == unique(phenoID$family)[i],]
+    #print(paste0("Family: ",unique(phenoID$family)[i]))
+    #print(paste0("Missing pH values: ",sum(is.na(temp$JarpHNBS))))
+    temp <- temp[!is.na(temp[,x]),]
+    model_out <- lmer(temp[,y]~temp[,x] + (1|temp[,r]))
+    model_out_s <- summary(model_out)
+    inter <- c(inter,model_out_s$coefficients[1,1])
+    slp <- c(slp,model_out_s$coefficients[2,1])
+}
+
+family_group <- phenoID %>% group_by(family) %>% summarize(damID=unique(damID),sireID=unique(sireID),Parent_Treatment=unique(ParentTrt))
+family_group$Parent_Treatment <- as.factor(family_group$Parent_Treatment)
+family_group$Slope=slp
+family_group$Intercept=inter
+```
+
+**NOTE**:
+Family EF04_EM04 missing 10 samples from the offspring control treatment due to missing pH values.
+
+```{r}
+(p1 <- ggplot(family_group,aes(Slope,Parent_Treatment,group=Parent_Treatment,colour=Parent_Treatment)) + 
+    geom_boxplot() +
+    theme_cowplot() +
+    labs(title="Slope",x="",y="") +
+    scale_color_manual(values = c("turquoise","coral")) +
+    theme(plot.title = element_text(hjust = 0.5))
+)
+  
+(p2 <- ggplot(family_group,aes(Intercept,Parent_Treatment,group=Parent_Treatment,colour=Parent_Treatment)) + 
+    geom_boxplot() +
+    theme_cowplot() +
+    scale_color_manual(values = c("turquoise","coral")) +
+    labs(title="Intercept",x="",y="") +
+    theme(plot.title = element_text(hjust = 0.5))
+)
+```
+
+### Distribution of slopes and intercepts for various phenotypes by parental treatment  
+```{r echo=F,fig.width=12,fig.height=6}
+plot_grid(p1,p2)
+```
+
+```{r}
+ggplot(family_group,aes(x=Intercept,y=Slope,colour=damID)) +
+  geom_point(size=4) +
+  scale_color_viridis_d() +
+  theme_cowplot()
+
+ggplot(family_group,aes(x=Intercept,y=Slope,colour=sireID)) +
+  geom_point(size=4) +
+  scale_color_viridis_d() +
+  theme_cowplot()
+
+ggplot(family_group,aes(x=Intercept,y=Slope,colour=Parent_Treatment)) +
+  geom_point(size=4) +
+  scale_color_viridis_d() +
+  theme_cowplot()
+
+
+model_out <- lmer(Slope~(1|damID)+(1|Parent_Treatment),data=family_group)
+summary(model_out)
+
+model_out <- lmer(Intercept~(1|damID)+(1|Parent_Treatment),data=family_group)
+summary(model_out)
+```
+
+```{r}
+wilcox.test(ind$slope$GrowthPerDay~ind$slope$ParentTrt)
+wilcox.test(ind$intercept$GrowthPerDay~ind$intercept$ParentTrt)
+```
+
+# Estimating reaction norms with family level summary values
+
+**Variables**
+
+* Growth (mean growth per jar)
+* Mortality
+* Abnormality
+* Number of cilia
+
+## Options for estimating family-level reactions norms with our data
+
+* **(Option 1)** : Use linear regression to estimate the slope for each family.  
 * **(Option 2)** : Use bootstrapping to estimate a slope distribution for each family.  
 
 The former option is the simplest, but may be problematic because we have a small number of replicates (n=3) and our data may not meet the assumptions of regression. Alternatively, bootstrapping has fewer assumptions, but generates a distribution rather than a single slope estimate. I think we might then have to generate a number of test datasets in which we randomly draw a single slope value for each family from their respective distributions, then run each of these datasets through the animal model to generate a distribution of possible mean heritability estimates.
 
-## Option 1 -  Estimating slopes via regression
+## Option 1 - Estimating slopes via regression
 
-Here we fit a linear reaction norm to each family using regression. To this I simply fitted a simple linear model (`lm`) to each family separately (n = ~6 (3 control and 3 exposed)) using phenotype as the response variable and jar pH as the explainatory variable. The slope from this model represents an approximate measure of plasticity for each family.  
+Here we fit a linear reaction norm to each family using regression. To this I simply fitted a simple linear model (`lm`) to each family separately (n = ~6 (3 control and 3 exposed)) using phenotype as the response variable and jar pH as the explanatory variable. The slope from this model represents an approximate measure of plasticity for each family.  
 
 ```{r warning=F}
 y <- c("Growth","Area","Diameter","Perimeter","MMR","PDR","LarvaeSurvived","AbnormalCount","PercentCilia")
-x <- "JarpHNBS"
-slope_mat <- matrix(ncol=length(y),nrow=length(unique(jrp$parentalComb)))
+x <- "JarpCO2_SW"
+slope_mat <- matrix(ncol=length(y),nrow=length(unique(jrp$family)))
 colnames(slope_mat) <- y
-intercept_mat <- matrix(ncol=length(y),nrow=length(unique(jrp$parentalComb)))
+intercept_mat <- matrix(ncol=length(y),nrow=length(unique(jrp$family)))
 colnames(intercept_mat) <- y
-for( i in 1:length(unique(jrp$parentalComb))){
+for( i in 1:length(unique(jrp$family))){
   for(j in 1:length(y)){
-    temp <- jrp[jrp$parentalComb == unique(jrp$parentalComb)[i],]
+    temp <- jrp[jrp$family == unique(jrp$family)[i],]
     lm_out <- lm(temp[,y[j]]~temp[,x])
     lm_sum <- summary(lm_out)
     intercept_mat[i,j] <- lm_sum$coefficients[1,1]
@@ -87,8 +281,8 @@ for( i in 1:length(unique(jrp$parentalComb))){
   }
 }
 
-jar_growth <- data.frame(parentalComb=unique(jrp$parentalComb))
-jar_growth <- left_join(jar_growth,jrp_pcombo,by="parentalComb")
+jar_growth <- data.frame(family=unique(jrp$family))
+jar_growth <- left_join(jar_growth,jrp_pcombo,by="family")
 jar_intercept <- data.frame(jar_growth,intercept_mat)
 jar_slope <- data.frame(jar_growth,slope_mat)
 
@@ -102,6 +296,7 @@ for( i in 1:length(y)){
   temp <- data.frame(Parent_Treatment=as.factor(jar$slope$ParentTrt),Slope=jar$slope[,i+2])
   out <- ggplot(temp,aes(Slope,group=Parent_Treatment,colour=Parent_Treatment)) + 
     geom_density() +
+    scale_color_manual(values = c("turquoise","coral")) +
     theme_cowplot() +
     labs(title=y[i],x="",y="") +
     theme(legend.position = "none",
@@ -110,6 +305,7 @@ for( i in 1:length(y)){
   temp <- data.frame(Parent_Treatment=as.factor(jar$intercept$ParentTrt),Intercept=jar$intercept[,i+2])
   out <- ggplot(temp,aes(Intercept,group=Parent_Treatment,colour=Parent_Treatment)) + 
     geom_density() +
+    scale_color_manual(values = c("turquoise","coral")) +
     theme_cowplot() +
     labs(title=y[i],x="",y="") +
     theme(legend.position = "none",
@@ -130,16 +326,16 @@ In this option, rather than estimating the slope for a family using regression I
 
 ```{r}
 y <- c("Growth","Area","Diameter","Perimeter","MMR","PDR","LarvaeSurvived","PercentCilia")
-x <- "JarpHNBS"
+x <- "JarpCO2_SW"
 slope_comb <- rep(list(NULL),times=length(y))
 names(slope_comb) <- y
 jrp <- jrp[jrp$JarID != "J279_B1",]
 jrp$AbnormalCount <- as.numeric(jrp$AbnormalCount)
-jrp %>% group_by(parentalComb) %>% summarise(ParentTrt=unique(ParentTrt)) -> jrp_pcombo
+jrp %>% group_by(family) %>% summarise(ParentTrt=unique(ParentTrt)) -> jrp_pcombo
 
 for(i in 1:length(y)){
-  for(j in 1:length(unique(jrp$parentalComb))){
-    temp <- jrp[jrp$parentalComb == unique(jrp$parentalComb)[j],]
+  for(j in 1:length(unique(jrp$family))){
+    temp <- jrp[jrp$family == unique(jrp$family)[j],]
     tc_y <- temp[temp$JarTrt == "Control",y[i]]
     tc_x <- temp[temp$JarTrt == "Control",x]
     te_y <- temp[temp$JarTrt == "Exposed",y[i]]
@@ -156,7 +352,7 @@ for(i in 1:length(y)){
       slope_comb[[y[i]]] <- c(slope_comb[[y[i]]],name=list(temp_slope))
     }
   }
-  names(slope_comb[[i]]) <- unique(jrp$parentalComb)
+  names(slope_comb[[i]]) <- unique(jrp$family)
 }
 ```
 
@@ -180,10 +376,12 @@ for(j in 1:length(slope_reps)){
 ```{r echo=F,fig.width=10,fig.height=10}
 plot_slope_list2 <- list()
 for(i in 1:length(slope_reps)){
+  temp=slope_reps[[names(slope_reps[i])]]
   out <- data.frame(family=rownames(slope_reps[[names(slope_reps[i])]]),Parent_Trt=as.factor(jrp_pcombo$ParentTrt),slope_reps[[names(slope_reps)[i]]])
   out2 <- melt(out,id.vars = c("family","Parent_Trt"))
   plot_slope_list2[[i]] <- ggplot(out2,aes(value,group=Parent_Trt,colour=Parent_Trt)) + 
     geom_density(adjust=3) + 
+    scale_color_manual(values = c("turquoise","coral")) +
     theme_cowplot() + 
     labs(title=names(slope_reps)[i],x="",y="") +
     theme(legend.position = "none",
@@ -197,64 +395,19 @@ plot_grid(plotlist = plot_slope_list2)
 ```
 
 
-## Option 3 - Regression based on individual samples  
+## Miscellaneous visualization of other phenotypes
 ```{r}
-pheno_ind <- ind$pheno
-pheno_ind <-  pheno_ind[!is.na(pheno_ind$GrowthPerDay),]
-coln <- c("JarID","JarpHNBS","parentalComb")
-jrp_red <- subset(jrp,select=coln)
-phenoID <- left_join(pheno_ind,jrp_red,by="JarID")
-phenoID <-  phenoID[!is.na(phenoID$parentalComb),]
-y <- c("GrowthPerDay")
-x <- "JarpHNBS"
-slope_mat <- matrix(ncol=length(y),nrow=length(unique(phenoID$parentalComb)))
-colnames(slope_mat) <- y
-intercept_mat <- matrix(ncol=length(y),nrow=length(unique(phenoID$parentalComb)))
-colnames(intercept_mat) <- y
-for( i in 1:length(unique(phenoID$parentalComb))){
-  for(j in 1:length(y)){
-    temp <- phenoID[phenoID$parentalComb == unique(phenoID$parentalComb)[i],]
-    lm_out <- lm(temp[,y[j]]~temp[,x])
-    lm_sum <- summary(lm_out)
-    intercept_mat[i,j] <- lm_sum$coefficients[1,1]
-    slope_mat[i,j] <- lm_sum$coefficients[2,1]
-  }
-}
+ggplot(jrp,aes(x=JarTrt,y=log(AbnormalCount),colour=JarTrt)) + facet_grid(cols=vars(ParentTrt)) + geom_boxplot()
+ggplot(jrp,aes(x=JarTrt,y=log(CiliaTotalCount),colour=JarTrt)) + facet_grid(cols=vars(ParentTrt)) + geom_boxplot()
+ggplot(jrp,aes(x=JarTrt,y=log(UnfertCount),colour=JarTrt)) + facet_grid(cols=vars(ParentTrt)) + geom_boxplot()
+ggplot(jrp,aes(x=JarTrt,y=log(EggDiamum),colour=JarTrt)) + facet_grid(cols=vars(ParentTrt)) + geom_boxplot()
+ggplot(jrp,aes(x=JarTrt,y=log(LarvaeSurvived),colour=JarTrt)) + facet_grid(cols=vars(ParentTrt)) + geom_boxplot()
+jrp$LarvaeSurvived
 
-ind_growth <- data.frame(parentalComb=unique(phenoID$parentalComb))
-ind_growth <- left_join(ind_growth,jrp_pcombo,by="parentalComb")
-ind_intercept <- data.frame(ind_growth,intercept_mat)
-ind_slope <- data.frame(ind_growth,slope_mat)
-
-ind <- list(intercept=ind_intercept,slope=ind_slope)
+library(lme4)
+library(lmerTest)
+temp <- lmer(log(LarvaeSurvived) ~ as.factor(JarTrt) * as.factor(ParentTrt) + (1|family), data=jrp)
+temp_aov <- anova(temp)
+summary(temp_aov)
+summary(temp)
 ```
-
-```{r}
-plot_slopes <- list()
-plot_intercepts <- list()
-for( i in 1:length(y)){
-  temp <- data.frame(Parent_Treatment=as.factor(ind$slope$ParentTrt),Slope=ind$slope[,i+2])
-  out <- ggplot(temp,aes(Slope,group=Parent_Treatment,colour=Parent_Treatment)) + 
-    geom_density() +
-    theme_cowplot() +
-    labs(title=y[i],x="",y="") +
-    theme(legend.position = "none",
-          plot.title = element_text(hjust = 0.5))
-  plot_slopes[[i]] <- out
-  temp <- data.frame(Parent_Treatment=as.factor(ind$intercept$ParentTrt),Intercept=ind$intercept[,i+2])
-  out <- ggplot(temp,aes(Intercept,group=Parent_Treatment,colour=Parent_Treatment)) + 
-    geom_density() +
-    theme_cowplot() +
-    labs(title=y[i],x="",y="") +
-    theme(legend.position = "none",
-          plot.title = element_text(hjust = 0.5))
-  plot_intercepts[[i]] <- out
-    
-}
-```
-
-### Distribution of slopes for various phenotypes by parental treatment  
-```{r echo=F,fig.width=10,fig.height=10}
-plot_grid(plotlist=plot_slopes)
-  ```
-

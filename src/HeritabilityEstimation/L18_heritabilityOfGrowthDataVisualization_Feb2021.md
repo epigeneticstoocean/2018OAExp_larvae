@@ -48,7 +48,7 @@ scaled using the `scale()` function.
 ## Data and Scripts
 
 ``` r
-mod_output <- readRDS("~/Desktop/GrowthHeritabilityEstimate.RDS")
+mod_output <- readRDS("~/Github/2018OAExp_larvae/input_files/heritabilityEstimates/GrowthHeritabilityEstimate.RDS")
 ```
 
 **Links to Data and Scripts**
@@ -212,7 +212,7 @@ level heritability in Grunion in ambient and OA conditions.
 
     ## No id variables; using all as measure variables
 
-![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
+![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->![](L18_heritabilityOfGrowthDataVisualization_Feb2021_files/figure-gfm/unnamed-chunk-6-5.png)<!-- -->
 
 ### Take-aways
 

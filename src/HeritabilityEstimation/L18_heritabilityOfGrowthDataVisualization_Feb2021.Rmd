@@ -5,6 +5,8 @@ output:
     pandoc_args: --webtex
     toc: true
     toc_depth: 2
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Overview
@@ -20,7 +22,7 @@ where $G$ is pedigree or genetic component, $R$ is the damID or maternal compone
 
 ## Data and Scripts
 ```{r}
-mod_output <- readRDS("~/Desktop/GrowthHeritabilityEstimate.RDS")
+mod_output <- readRDS("~/Github/2018OAExp_larvae/input_files/heritabilityEstimates/GrowthHeritabilityEstimate.RDS")
 ```
 
 **Links to Data and Scripts**
@@ -115,6 +117,7 @@ ggplot(sumTab,aes(model,animal_H2_mean,colour=model)) +
 
 # Variance and Heritability Comparisons for "Full Model" (Model 6) and "Best Model" (Model 3)
 ```{r echo=F}
+#sumTabSub <- subset(sumTab,sumTab$model == "Model3")
 sumTabSub <- subset(sumTab,sumTab$model == "Model3" | sumTab$model == "Model6")
 
 model <- c(sumTabSub$model,sumTabSub$model)
@@ -127,15 +130,19 @@ upperH <- c(sumTabSub$animal_H2_upper,sumTabSub$dam_H2_upper)
 
 df <- data.frame(model,treatment,varComponent,meanH,lowerH,upperH)
 
-ggplot(df,aes(x=treatment,y=meanH)) +
+(p1 <- ggplot(df,aes(x=treatment,y=meanH,colour=treatment)) +
+  #facet_grid(cols=vars(varComponent)) +
   facet_grid(cols=vars(varComponent),rows=vars(model)) +
   ylim(0,1) +
   geom_point() +
-  geom_errorbar(aes(ymin=lowerH, ymax=upperH)) +
+  geom_errorbar(aes(ymin=lowerH, ymax=upperH),width=.5) +
   labs(y="Proportion of Variation",x="") +
   theme_cowplot() +
   theme(legend.position = "none",
-        axis.text.x = element_text(angle = 25, vjust = 0.5, hjust=1))
+        axis.text.x = element_text(angle = 25, vjust = 0.5, hjust=1)))
+
+# Used to generation initial heritability estimate
+#ggsave("~/Desktop/heritabiliyEstimatesHeritabilityModel_March2021.png",plot=p1,width = 30,height = 15,units = "cm")
 ```
 
 ### Take-aways
@@ -160,16 +167,25 @@ boxplot_plot <- ggplot(rdf,aes(x=sqrt(Area),y=variable,color=variable)) +
   xlim(0,1) +
   geom_boxplot() +
   labs(x="Larval Area Components of Variation (SD)") +
+  #labs(x="Components of Variation (SD)") +
   theme_cowplot() +
   theme(legend.position = "none")
 p1 <- plot_grid(density_plot,boxplot_plot,ncol = 1,align="v")
-p1
+return(p1)
 }
 
-model_var(mod_output$cc$mod3$model$VCV,"Parent:Control Offspring:Control")
-model_var(mod_output$ce$mod3$model$VCV,"Parent:Control Offspring:Exposed")
-model_var(mod_output$ec$mod3$model$VCV,"Parent:Exposed Offspring:Control")
-model_var(mod_output$ee$mod3$model$VCV,"Parent:Exposed Offspring:Exposed")
+(p1 <- model_var(mod_output$cc$mod3$model$VCV,"Parent:Control Offspring:Control"))
+(p2 <- model_var(mod_output$ce$mod3$model$VCV,"Parent:Control Offspring:Exposed"))
+(p3 <- model_var(mod_output$ec$mod3$model$VCV,"Parent:Exposed Offspring:Control"))
+(p4 <- model_var(mod_output$ee$mod3$model$VCV,"Parent:Exposed Offspring:Exposed"))
+
+# Used for for creating standalone figure (this version used the alternative xlab above)
+# p1 <- model_var(mod_output$cc$mod3$model$VCV,"P:C O:C")
+# p2 <- model_var(mod_output$ce$mod3$model$VCV,"P:C O:E")
+# p3 <- model_var(mod_output$ec$mod3$model$VCV,"P:E O:C")
+# p4 <- model_var(mod_output$ee$mod3$model$VCV,"P:E O:E")
+# varplot <- plot_grid(p1,p2,p3,p4)
+# ggsave("~/Desktop/varianceComponentsHeritibilityModel_March2021.png",plot=varplot,width = 30,height = 15,units = "cm")
 ```
 
 ### Take-aways 
