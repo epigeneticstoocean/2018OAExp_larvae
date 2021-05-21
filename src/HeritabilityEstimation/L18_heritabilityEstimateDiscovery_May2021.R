@@ -5,17 +5,17 @@
 
 
 #### Libraries ####
-library(AGHmatrix)
+#library(AGHmatrix)
 library(MCMCglmm,verbose = F)
-library(dplyr,verbose = F)
+#library(dplyr,verbose = F)
 #library(brms,verbose = F)
 #library(rstan,verbose = F)
 #options(mc.cores = parallel::detectCores())
 #rstan_options(auto_write = TRUE)
 
 #### working directory ####
-setwd("~/Github/2018OAExp_larvae/") # Local
-#setwd("~/2018OAExp_larvae/") # HPC
+#setwd("~/Github/2018OAExp_larvae/") # Local
+setwd("~/2018OAExp_larvae/") # HPC
 
 #### Data #### 
 print("Reading in data...")
@@ -61,17 +61,17 @@ A_jar_mcmc <- MCMCglmm::inverseA(ped_jar)$Ainv
 A_family_mcmc <- MCMCglmm::inverseA(ped_family)$Ainv
 ## Format for brms
 # Individuals
-ped_ind_alt <- ped_ind
-ped_ind_alt[is.na(ped_ind_alt)] <-  0
-A_ind_alt  <- Amatrix(ped_ind_alt)
+#ped_ind_alt <- ped_ind
+#ped_ind_alt[is.na(ped_ind_alt)] <-  0
+#A_ind_alt  <- Amatrix(ped_ind_alt)
 # Jar
-ped_jar_alt <- ped_jar
-ped_jar_alt[is.na(ped_jar_alt)] <-  0
-A_jar_alt  <- Amatrix(ped_jar_alt)
+#ped_jar_alt <- ped_jar
+#ped_jar_alt[is.na(ped_jar_alt)] <-  0
+#A_jar_alt  <- Amatrix(ped_jar_alt)
 # Family
-ped_family_alt <- ped_family
-ped_family_alt[is.na(ped_family_alt)] <-  0
-A_family_alt  <- Amatrix(ped_family_alt)
+#ped_family_alt <- ped_family
+#ped_family_alt[is.na(ped_family_alt)] <-  0
+#A_family_alt  <- Amatrix(ped_family_alt)
 
 #### Priors ####
 print("Creating priors...")

@@ -1,0 +1,5 @@
+Loading required package: Matrix
+Loading required package: coda
+Loading required package: ape
+Error in Amatrix(ped_ind_alt) : could not find function "Amatrix"
+Execution halted

@@ -7,9 +7,9 @@
 #SBATCH --partition=lotterhos
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=32
-#SBATCH --output=/work/lotterhos/2018OALarvae_DNAm/slurm_log/DNAm_mapping_%j.out
-#SBATCH --error=/work/lotterhos/2018OALarvae_DNAm/slurm_log/DNAm_mapping_%j.err
+#SBATCH --output=/home/downey-wall.a/2018OAExp_larvae/results/heritabilitySlurmOutput_%j.out
+#SBATCH --error=/home/downey-wall.a/2018OAExp_larvae/results/heritabilitySlurmOutput_%j.err
 
-source ~/miniconda3/bin/activate methyKit_20210604
+source ~/miniconda3/bin/activate adw_20210415
 
-Rscript ~/2018OAlarvae_DNAm/src/04_methylKitMatrix.R
+Rscript ~/2018OAExp_larvae/src/HeritabilityEstimation/L18_heritabilityEstimateDiscovery_May2021.R
