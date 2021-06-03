@@ -1,0 +1,350 @@
+---
+title: "L18 visualization of May2021"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 3
+    pandoc_args: "--webtex"
+    
+editor_options: 
+  chunk_output_type: console
+---
+
+## Overview 
+Reran animal model to partition sources of larval growth variance. Based on preliminary testing I used a model that included $animal$, $damID$, and $jarID$ as random effects in the model for a final model that looked like this:
+
+$$larval \ growth = animalz + damIDz + jarIDz + \epsilon$$
+While the focus for this model will be larval growth I also examined a bivariate model that included larval growth and morphology (represented as the perimeter/diameter ratio) as response variables and the same explanatory variables as the univariate model above. The rationale here was that we could see if there was a genetic correlation between these two traits. I also ran this model as a sanity check thinking that the partitioning of variance among the three main explanatory effects should be the same for growth regardless of the model run (univariate vs. bivariate).
+
+### Main model parameters
+
+Iterations : 5000000
+Burnin : 50000
+Thinning interval : 5000
+
+Based on this we expect an effective population size of 990 if there is no autocorrelation
+Calculation - (5000000-50000)/5000
+
+**Priors**
+Inverse-wishart : V=1, nu=0.002 (for each random effect and residual variation)
+
+```{r echo=F}
+cc_growth_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-20_MCMCglmm_cc_growth_model.RDS")
+cc_growth_mod <- cc_growth_mod[[2]]
+ce_growth_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-20_MCMCglmm_ce_growth_model.RDS")
+ce_growth_mod <- ce_growth_mod[[2]]
+ec_growth_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-20_MCMCglmm_ec_growth_model.RDS")
+ec_growth_mod <- ec_growth_mod[[2]]
+ee_growth_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ee_growth_model.RDS")
+ee_growth_mod <- ee_growth_mod[[2]]
+
+cc_PDR_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_cc_PDR_model.RDS")
+cc_PDR_mod <- cc_PDR_mod[[2]]
+ce_PDR_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ce_PDR_model.RDS")
+ce_PDR_mod <- ce_PDR_mod[[2]]
+ec_PDR_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ec_PDR_model.RDS")
+ec_PDR_mod <- ec_PDR_mod[[2]]
+ee_PDR_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ee_PDR_model.RDS")
+ee_PDR_mod <- ee_PDR_mod[[2]]
+
+cc_bi_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_cc_bi_model.RDS")
+cc_bi_mod <- cc_bi_mod[[2]]
+ce_bi_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ce_bi_model.RDS")
+ce_bi_mod <- ce_bi_mod[[2]]
+ec_bi_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ec_bi_model.RDS")
+ec_bi_mod <- ec_bi_mod[[2]]
+ee_bi_mod <- readRDS("~/Github/2018OAExp_larvae/results/2021-05-21_MCMCglmm_ee_bi_model.RDS")
+ee_bi_mod <- ee_bi_mod[[2]]
+```
+
+```{r echo=F}
+library(ggplot2)
+library(cowplot)
+library(reshape2)
+library(MCMCglmm)
+library(knitr)
+```
+
+```{r echo=F}
+model_var <- function(x,title){
+  ## Plot for visualizing all random variance components
+ref <- data.frame(x)
+rdf <- melt(ref,value.name="Area") # Replace growth rate is using another phenotype
+density_plot <- ggplot(rdf,aes(x=sqrt(Area),color=variable)) +
+  xlim(0,1) +
+  geom_density() +
+  labs(x="",title=title) +
+  theme_cowplot() +
+  theme(legend.position = "none",plot.title = element_text(hjust = 0.5))
+boxplot_plot <- ggplot(rdf,aes(x=sqrt(Area),y=variable,color=variable)) +
+  xlim(0,1) +
+  geom_boxplot() +
+  labs(x="Larval Area Components of Variation (SD)") +
+  theme_cowplot() +
+  theme(legend.position = "none")
+p1 <- plot_grid(density_plot,boxplot_plot,ncol = 1,align="v")
+return(p1)
+}
+```
+
+## Univariate model(s) for larval growth
+
+### Variance Components
+```{r echo=F,fig.width=12,fig.height=12}
+p1 <- model_var(cc_growth_mod$VCV,"P_C:O_C")
+p2 <- model_var(ce_growth_mod$VCV,"P_C:O_E")
+p3 <- model_var(ec_growth_mod$VCV,"P_E:O_C")
+p4 <- model_var(ee_growth_mod$VCV,"P_E:O_E")
+
+plot_grid(p1,p2,p3,p4,ncol=2)
+```
+
+### Model Check
+
+Lets look at summary outputs for each model
+```{r}
+summary(cc_growth_mod)
+summary(ce_growth_mod)
+summary(ec_growth_mod)
+summary(ee_growth_mod)
+```
+
+Notice a relative small number of effective samples for each random effect (<990) compared to the number of iterations I ran.
+
+**Lag**
+
+```{r}
+level_of_autoCorr <- 0.15
+autoCorrIssues <- sum(autocorr(cc_growth_mod$VCV)["Lag 5000",,] > level_of_autoCorr)
+autoCorrIssues
+max(autocorr(cc_bi_mod$VCV)["Lag 5000",,])
+```
+
+Running this for each model yields similar results, only small evidence of correlation with a thinning interval of 5000.
+
+## Bivariate model looking at both growth and morphology
+
+### Plotting Variance Components
+```{r echo=F,fig.width=12,fig.height=10,warning=F}
+model_var <- function(x,title){
+  ## Plot for visualizing all random variance components
+ref <- data.frame(x)
+rdf <- melt(ref,value.name="Area") # Replace growth rate is using another phenotype
+
+upper <- quantile(rdf$Area,0.99)
+density_plot <- ggplot(rdf,aes(x=sqrt(Area),color=variable)) +
+  xlim(0,upper) +
+  geom_density() +
+  labs(x="",title=title) +
+  theme_cowplot() +
+  theme(legend.position = "none",plot.title = element_text(hjust = 0.5))
+boxplot_plot <- ggplot(rdf,aes(x=sqrt(Area),y=variable,color=variable)) +
+  xlim(0,upper) +
+  geom_boxplot() +
+  labs(x="Larval Area Components of Variation (SD)") +
+  scale_y_discrete(labels=c("animal","damID","JarID","Residual")) +
+  theme_cowplot() +
+  theme(legend.position = "none")
+p1 <- plot_grid(density_plot,boxplot_plot,ncol = 1,align="v",
+                rel_heights = c(0.6,0.4))
+return(p1)
+}
+
+p1 <- model_var(cc_bi_mod$VCV[,c(1,5,9,13)],"Bivariate Model - Growth - P:C Off:C")
+p2 <- model_var(cc_bi_mod$VCV[,c(4,8,12,16)],"Bivariate Model - PDR - P:C Off:C")
+plot_grid(p1,p2,ncol = 2)
+
+p1 <- model_var(ce_bi_mod$VCV[,c(1,5,9,13)],"Bivariate Model - Growth - P:C Off:E")
+p2 <- model_var(ce_bi_mod$VCV[,c(4,8,12,16)],"Bivariate Model - PDR - P:C Off:E")
+plot_grid(p1,p2,ncol = 2)
+
+p1 <- model_var(ec_bi_mod$VCV[,c(1,5,9,13)],"Bivariate Model - Growth - P:E Off:C")
+p2 <- model_var(ec_bi_mod$VCV[,c(4,8,12,16)],"Bivariate Model - PDR - P:E Off:C")
+plot_grid(p1,p2,ncol = 2)
+
+p1 <- model_var(ee_bi_mod$VCV[,c(1,5,9,13)],"Bivariate Model - Growth - P:E Off:E")
+p2 <- model_var(ee_bi_mod$VCV[,c(4,8,12,16)],"Bivariate Model - PDR - P:E Off:E")
+plot_grid(p1,p2,ncol = 2)
+```
+
+### Estimate heritability and maternal effects
+
+Table of heritability, maternal effects for each trait, as well as the correlations in genetic and maternal effects among traits. Each metric is presented as the mode and the 95% confidence interval (lower and upper).
+
+```{r echo=F}
+### Heritabilities
+growth_heritability <- cc_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.animal"] /rowSums(cc_bi_mod$VCV[,c(1,5,9,13)])
+PDR_heritability <- cc_bi_mod$VCV[,"traitPDRScale:traitPDRScale.animal"]/rowSums(cc_bi_mod$VCV[,c(4,8,12,16)])
+
+
+heritability_growth <- data.frame("Growth Heritability", posterior.mode(growth_heritability),HPDinterval(growth_heritability, 0.95)[1],HPDinterval(growth_heritability, 0.95)[2],check.names = F)
+colnames(heritability_growth) <- c("Comparison","Mode","Lower_CI","Upper_CI")
+heritability_PDR <- data.frame("PDR Heritability", posterior.mode(PDR_heritability),HPDinterval(PDR_heritability, 0.95)[1],HPDinterval(PDR_heritability, 0.95)[2],check.names = F)
+colnames(heritability_PDR) <- c("Comparison","Mode","Lower_CI","Upper_CI")
+
+### Maternal Effects
+growth_maternal <- cc_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.damID"] /rowSums(cc_bi_mod$VCV[,c(1,5,9,13)])
+PDR_maternal <- cc_bi_mod$VCV[,"traitPDRScale:traitPDRScale.damID"]/rowSums(cc_bi_mod$VCV[,c(4,8,12,16)])
+
+maternal_growth <- data.frame("Growth Maternal",posterior.mode(growth_maternal),HPDinterval(growth_maternal, 0.95)[1],HPDinterval(growth_maternal, 0.95)[2],check.names = F)
+colnames(maternal_growth) <- c("Comparison","Mode","Lower_CI","Upper_CI")
+maternal_PDR <- data.frame("PDR Maternal",posterior.mode(PDR_maternal),HPDinterval(PDR_maternal, 0.95)[1],HPDinterval(PDR_maternal, 0.95)[2],check.names=F)
+colnames(maternal_PDR) <- c("Comparison","Mode","Lower_CI","Upper_CI")
+
+### Correlations
+# Genetic
+genetic.correlation <- cc_bi_mod$VCV[,"traitGrowthScale:traitPDRScale.animal"] / sqrt(cc_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.animal"] * cc_bi_mod$VCV[,"traitPDRScale:traitPDRScale.animal"])
+# Maternal
+maternal.correlation <- cc_bi_mod$VCV[,"traitGrowthScale:traitPDRScale.damID"] / sqrt(cc_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.damID"] * cc_bi_mod$VCV[,"traitPDRScale:traitPDRScale.damID"])
+
+corr_gen <- data.frame("Genetic Correlation",posterior.mode(genetic.correlation),HPDinterval(genetic.correlation, 0.95)[1],HPDinterval(genetic.correlation, 0.95)[2])
+colnames(corr_gen) <- c("Comparison","Mode","Lower_CI","Upper_CI")
+corr_mat <- data.frame("Maternal Correlation",posterior.mode(maternal.correlation),HPDinterval(maternal.correlation, 0.95)[1],HPDinterval(maternal.correlation, 0.95)[2])
+colnames(corr_mat) <- c("Comparison","Mode","Lower_CI","Upper_CI")
+
+summary_table <- rbind(heritability_growth,heritability_PDR,maternal_growth,maternal_PDR,corr_gen,corr_mat)
+row.names(summary_table) <- NULL
+```
+
+```{r echo=F}
+kable(summary_table)
+```
+
+### Plotting Heritability, Maternal Effects, and Correlation among Traits
+
+Visualization of table from previous section
+
+```{r echo=F,fig.width=12,fig.height=10,warning=F}
+g_h <- data.frame(source="h2",pheno="Growth",value=as.numeric(growth_heritability))
+pdr_h <- data.frame(source="h2",pheno="PDR",value=as.numeric(PDR_heritability))
+g_m <- data.frame(source="m2",pheno="Growth",value=as.numeric(growth_maternal))
+pdr_m <- data.frame(source="m2",pheno="PDR",value=as.numeric(PDR_maternal))
+h2_m2 <- rbind(g_h,pdr_h,g_m,pdr_m)
+
+gcor <- data.frame(name="cor_Genetic",value=as.numeric(genetic.correlation))
+mcor <- data.frame(name="cor_Maternal",value=as.numeric(maternal.correlation))
+cor <- rbind(gcor,mcor)
+
+p1 <- ggplot(h2_m2,aes(x=source,value,colour=pheno)) + 
+  geom_boxplot(alpha=0.7) +
+  scale_x_discrete(labels=c("Additive Genetic","Maternal")) +
+  labs(x="Additive Genetic and Maternal Effects",y="Proportional Effect",colour="",title="Bivariate Model - P:Control Off:Control") +
+  theme_cowplot() +
+  theme(plot.title = element_text(hjust = 0.5))
+p2 <- ggplot(cor,aes(name,value)) + 
+  geom_hline(yintercept = 0,linetype=2) +
+  geom_boxplot(alpha=0.7) +
+  scale_x_discrete(labels=c("Genetic","Maternal")) +
+  labs(x="Genetic and Maternal Correlation",y="Correlation Coefficient",colour="",title="Bivariate Model - P:Control Off:Control") +
+  theme_cowplot() +
+  theme(plot.title = element_text(hjust = 0.5))
+plot_grid(p1,p2,ncol=2)
+```
+
+### Bivariate model checks 
+
+Lets look at summary outputs for each model
+```{r}
+summary(cc_bi_mod)
+summary(ce_bi_mod)
+summary(ce_bi_mod)
+summary(ee_bi_mod)
+```
+
+Effective sample sizes are actually larger in the bivariate model compared to the univariate model.
+
+**Lag**
+```{r echo=F}
+level_of_autoCorr <- 0.15
+autoCorrIssues <- sum(autocorr(cc_bi_mod$VCV)["Lag 5000",,] > level_of_autoCorr)
+autoCorrIssues
+max(autocorr(cc_bi_mod$VCV)["Lag 5000",,])
+# No major evidence of auto correlation issues
+```
+
+Minimal evidence of autocorrelation with a thinning interval of 5000.
+
+**Posterior Distributions**
+
+Growth
+
+```{r echo=F, fig.height=20,fig.width=10}
+# Growth
+plot(cc_bi_mod$VCV[,c(1,5,9,13)])
+```
+
+PDR 
+
+```{r echo=F,fig.height=20,fig.width=10}
+# PDR
+plot(cc_bi_mod$VCV[,c(4,8,12,16)])
+```
+
+The model appears to be behaving better than the univariate model from the perspective of a norm(ish) posterior distribution for most models
+
+## Model comparison - univariate vs bivariate 
+
+### The Estimated variance components for growth from each model
+
+
+```{r echo=F,fig.width=12,fig.height=10,warning=F}
+growth_heritability_cc <- cc_growth_mod$VCV[,"animal"] /rowSums(cc_growth_mod$VCV)
+growth_maternal_cc <- cc_growth_mod$VCV[,"damID"] /rowSums(cc_growth_mod$VCV)
+
+
+growth_animal_bi <- cc_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.animal"] /rowSums(cc_bi_mod$VCV[,c(1,5,9,13)])
+growth_maternal_bi <- cc_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.damID"] /rowSums(cc_bi_mod$VCV[,c(1,5,9,13)])
+
+p1 <- data.frame(model="univariate",component="h2",growth_heritability_cc)
+p2 <- data.frame(model="univariate",component="m2",growth_maternal_cc)
+
+p3 <- data.frame(model="bivariate",component="h2",growth_animal_bi)
+p4 <- data.frame(model="bivariate",component="m2",growth_maternal_bi)
+
+model_compare <- rbind(p1,p2,p3,p4)
+
+ggplot(model_compare,aes(component,var1,colour=model)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_x_discrete(labels=c("Additive Genetic","Maternal")) +
+  labs(x="Additive Genetic and Maternal Effects",y="Proportional Effect",colour="",title="P:Control Off:Control") +
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r echo=F,fig.width=12,fig.height=10,warning=F}
+growth_heritability_cc <- ee_growth_mod$VCV[,"animal"] /rowSums(ee_growth_mod$VCV)
+growth_maternal_cc <- ee_growth_mod$VCV[,"damID"] /rowSums(ee_growth_mod$VCV)
+
+
+growth_animal_bi <- ee_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.animal"] /rowSums(ee_bi_mod$VCV[,c(1,5,9,13)])
+growth_maternal_bi <- ee_bi_mod$VCV[,"traitGrowthScale:traitGrowthScale.damID"] /rowSums(ee_bi_mod$VCV[,c(1,5,9,13)])
+
+p1 <- data.frame(model="univariate",component="h2",growth_heritability_cc)
+p2 <- data.frame(model="univariate",component="m2",growth_maternal_cc)
+
+p3 <- data.frame(model="bivariate",component="h2",growth_animal_bi)
+p4 <- data.frame(model="bivariate",component="m2",growth_maternal_bi)
+
+model_compare <- rbind(p1,p2,p3,p4)
+
+ggplot(model_compare,aes(component,var1,colour=model)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_x_discrete(labels=c("Additive Genetic","Maternal")) +
+  labs(x="Additive Genetic and Maternal Effects",y="Proportional Effect",colour="",title="P:Exposed Off:Exposed") +
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+## General Thoughts
+
+1) The univariate model examining growth appears similar to the results from the last time I ran this model using the same priors and explanatory variables. Overall additive genetic effects appear to explain only a small to moderate amount of the total phenotypic variance, but interesting the relative contribution of additive genetic vs. maternal effects flips depending on parental environment (i.e., maternal effects are larger than additive genetic effects when parents were kept at control conditions but not OA conditions).
+2) In the bivariate model there was not evidence of significant correlation among the two traits, suggesting that we should be able to run the model seperately for each trait.
+3) Despite using the same parameters the two models had different estimates for for the larval growth variance components. Overall maternal effect was higher in the bivariate model and we did not see the same switch in relative contribution of additive genetic and maternal effects in the bivariate model like we saw in the univariate model.
+4) Comparing outputs it seems like the model is still struggling to estimate the effect of additive genetic variation (wide distribution) and particularly in the univariate model there appears to be a tendency to flip between attributing more growth variance to additive genetic variation vs maternal effects in one iteration of the model and vice versa in another iteration, suggesting that these two effects may be somewhat confounded. (more thoughts on this in the next steps section).
+
+## Next Steps
+
+1) I am currently running this same model with brms for the parental control : offspring control subset of data. After some troubleshooting I am actively running a version of the model that is expected to take abuot 24 hours. The idea is to examine how the estimates of the variance components from this model compare to those from the MCMCglmm as a final sanity check.
+2) From some of the literature it appears one of the issues that I may be having is that the pedigree is not particularly well connect due to the assumption that all adults are unrelated. This means the large majority of pairwise larval comparisons are unrelated. This could be remedied by creating a kinship matrix from SNP data acquired from the WGBS data.
