@@ -63,6 +63,7 @@ library(cowplot)
 library(reshape2)
 library(MCMCglmm)
 library(knitr)
+library(brms)
 ```
 
 ```{r echo=F}
@@ -326,7 +327,83 @@ p2 <- data.frame(model="univariate",component="m2",growth_maternal_cc)
 p3 <- data.frame(model="bivariate",component="h2",growth_animal_bi)
 p4 <- data.frame(model="bivariate",component="m2",growth_maternal_bi)
 
-model_compare <- rbind(p1,p2,p3,p4)
+model_compare2 <- rbind(p1,p2,p3,p4)
+
+ggplot(model_compare2,aes(component,var1,colour=model)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_x_discrete(labels=c("Additive Genetic","Maternal")) +
+  labs(x="Additive Genetic and Maternal Effects",y="Proportional Effect",colour="",title="P:Exposed Off:Exposed") +
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+## BRMS Model and comparisons
+
+BRMS model was run using **6** chains each with **20000** iterations and a **5000** iteration warmup using default priors. 
+
+I noticed that one of the chains was potentially problematic and for an initial part of the model run tended to overestimate the effect of additive genetic variation. I removed this outlier chain and ran the summary again, which took care of most of the warnings. 
+
+```{r}
+model = readRDS("~/Github/2018OAExp_larvae/results/2021-06-03_BRMS_cc_growth_model.RDS")
+model$prior
+plot(model)
+summary(model)
+```
+
+Lets check its predictive ability
+
+```{r}
+pp_check(model,nsamples = 100)
+```
+Not bad
+
+### Removing problematic chain
+```{r}
+# Removing problematic chain
+model2 <- model 
+chain_remove <- 2
+model2$fit@sim$samples[[chain_remove]] <- NULL
+model2$fit@sim$chains <- 5
+model2$fit@stan_args[[chain_remove]] <- NULL
+model2$fit@stan_args[[1]]$chain_id <- 1
+model2$fit@stan_args[[2]]$chain_id <- 2
+model2$fit@stan_args[[3]]$chain_id <- 3
+model2$fit@stan_args[[4]]$chain_id <- 4
+model2$fit@stan_args[[5]]$chain_id <- 5
+
+plot(model2)
+summary(model2)
+```
+
+### Comparing estimates of heritability and maternal effects from both MCMCglmm models and for both versions of BRMS models for Parent Control : Offspring Control
+
+```{r}
+# First model
+posterior_brms <- data.frame(posterior_samples(model,
+                                               pars = c("sd_animal__Intercept",
+                                                        "sd_damID__Intercept",
+                                                        "sd_JarID__Intercept",
+                                                        "sigma")))
+posterior_brms <- posterior_brms^2
+h2_brms <- posterior_brms$sd_animal__Intercept/rowSums(posterior_brms)
+m2_brms <- posterior_brms$sd_damID__Intercept/rowSums(posterior_brms)
+
+p1 <- data.frame(model="brms (all chains)",component="h2",var1=h2_brms)
+p2 <- data.frame(model="brms (all chains)",component="m2",var1=m2_brms)
+#Second model
+posterior_brms <- data.frame(posterior_samples(model2,
+                                               pars = c("sd_animal__Intercept",
+                                                        "sd_damID__Intercept",
+                                                        "sd_JarID__Intercept",
+                                                        "sigma")))
+posterior_brms <- posterior_brms^2
+h2_brms <- posterior_brms$sd_animal__Intercept/rowSums(posterior_brms)
+m2_brms <- posterior_brms$sd_damID__Intercept/rowSums(posterior_brms)
+
+p3 <- data.frame(model="brms (outlier removed)",component="h2",var1=h2_brms)
+p4 <- data.frame(model="brms (outlier removed)",component="m2",var1=m2_brms)
+
+model_compare <- rbind(model_compare,p1,p2,p3,p4)
 
 ggplot(model_compare,aes(component,var1,colour=model)) +
   geom_boxplot() +
@@ -336,15 +413,15 @@ ggplot(model_compare,aes(component,var1,colour=model)) +
    theme(plot.title = element_text(hjust = 0.5))
 ```
 
-
 ## General Thoughts
 
 1) The univariate model examining growth appears similar to the results from the last time I ran this model using the same priors and explanatory variables. Overall additive genetic effects appear to explain only a small to moderate amount of the total phenotypic variance, but interesting the relative contribution of additive genetic vs. maternal effects flips depending on parental environment (i.e., maternal effects are larger than additive genetic effects when parents were kept at control conditions but not OA conditions).
 2) In the bivariate model there was not evidence of significant correlation among the two traits, suggesting that we should be able to run the model seperately for each trait.
 3) Despite using the same parameters the two models had different estimates for for the larval growth variance components. Overall maternal effect was higher in the bivariate model and we did not see the same switch in relative contribution of additive genetic and maternal effects in the bivariate model like we saw in the univariate model.
 4) Comparing outputs it seems like the model is still struggling to estimate the effect of additive genetic variation (wide distribution) and particularly in the univariate model there appears to be a tendency to flip between attributing more growth variance to additive genetic variation vs maternal effects in one iteration of the model and vice versa in another iteration, suggesting that these two effects may be somewhat confounded. (more thoughts on this in the next steps section).
+5) The BRMS model appears to perform (at least for one treatment combination) similar to the univariate model, althought based on some of the errors the default parameterization for priors may need to be changed. BEWARE, I increased the interations to 20000 and used 6 chains, well above the default to handle some of the effective sample size errors I recieved when running with defaults. Even still this doesn't get rid of all errors and can lead to extensive run times (to run the model took 28 hours with 32Gb of memory and 6 cores).
 
 ## Next Steps
 
-1) I am currently running this same model with brms for the parental control : offspring control subset of data. After some troubleshooting I am actively running a version of the model that is expected to take abuot 24 hours. The idea is to examine how the estimates of the variance components from this model compare to those from the MCMCglmm as a final sanity check.
+1) I am currently running this same model with brms for the parental control : offspring control subset of data. After some troubleshooting I am actively running a version of the model that is expected to take abuot 24 hours. The idea is to examine how the estimates of the variance components from this model compare to those from the MCMCglmm as a final sanity check. (FINISHED)
 2) From some of the literature it appears one of the issues that I may be having is that the pedigree is not particularly well connect due to the assumption that all adults are unrelated. This means the large majority of pairwise larval comparisons are unrelated. This could be remedied by creating a kinship matrix from SNP data acquired from the WGBS data.

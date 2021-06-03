@@ -89,8 +89,4 @@ meta <- list(model="brms",
               run_time=diff)
 mod <- list(meta,model)
 print("Saving BRMS model......")
-saveRDS(mod,paste0("results/",substr(Sys.time(),1,10),"_BRMS_model.RDS"))
-
-model <- saveRDS(model,"")
-pairs(model)
-summary(model)
+saveRDS(mod,paste0("results/",substr(Sys.time(),1,10),"_BRMS_cc_growth_model.RDS"))

@@ -19,6 +19,12 @@ L18 visualization of May2021
     bivariate](#model-comparison---univariate-vs-bivariate)
     -   [The Estimated variance components for growth from each
         model](#the-estimated-variance-components-for-growth-from-each-model)
+-   [BRMS Model and comparisons](#brms-model-and-comparisons)
+    -   [Removing problematic chain](#removing-problematic-chain)
+    -   [Comparing estimates of heritability and maternal effects from
+        both MCMCglmm models and for both versions of BRMS models for
+        Parent Control : Offspring
+        Control](#comparing-estimates-of-heritability-and-maternal-effects-from-both-mcmcglmm-models-and-for-both-versions-of-brms-models-for-parent-control--offspring-control)
 -   [General Thoughts](#general-thoughts)
 -   [Next Steps](#next-steps)
 
@@ -58,6 +64,23 @@ residual variation)
     ## Loading required package: coda
 
     ## Loading required package: ape
+
+    ## Loading required package: Rcpp
+
+    ## Loading 'brms' package (version 2.14.4). Useful instructions
+    ## can be found by typing help('brms'). A more detailed introduction
+    ## to the package is available through vignette('brms_overview').
+
+    ## 
+    ## Attaching package: 'brms'
+
+    ## The following object is masked from 'package:MCMCglmm':
+    ## 
+    ##     me
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     ar
 
 ## Univariate model(s) for larval growth
 
@@ -544,6 +567,204 @@ the perspective of a norm(ish) posterior distribution for most models
 
 ![](L18_heritabilityEstimateDiscovery_Visualization_May2021_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
+## BRMS Model and comparisons
+
+BRMS model was run using **6** chains each with **20000** iterations and
+a **5000** iteration warmup using default priors.
+
+I noticed that one of the chains was potentially problematic and for an
+initial part of the model run tended to overestimate the effect of
+additive genetic variation. I removed this outlier chain and ran the
+summary again, which took care of most of the warnings.
+
+``` r
+model = readRDS("~/Github/2018OAExp_larvae/results/2021-06-03_BRMS_cc_growth_model.RDS")
+model$prior
+```
+
+    ##                  prior     class      coef  group resp dpar nlpar bound
+    ##  student_t(3, -1, 2.5) Intercept                                       
+    ##   student_t(3, 0, 2.5)        sd                                       
+    ##   student_t(3, 0, 2.5)        sd           animal                      
+    ##   student_t(3, 0, 2.5)        sd Intercept animal                      
+    ##   student_t(3, 0, 2.5)        sd            damID                      
+    ##   student_t(3, 0, 2.5)        sd Intercept  damID                      
+    ##   student_t(3, 0, 2.5)        sd            JarID                      
+    ##   student_t(3, 0, 2.5)        sd Intercept  JarID                      
+    ##   student_t(3, 0, 2.5)     sigma                                       
+    ##        source
+    ##       default
+    ##       default
+    ##  (vectorized)
+    ##  (vectorized)
+    ##  (vectorized)
+    ##  (vectorized)
+    ##  (vectorized)
+    ##  (vectorized)
+    ##       default
+
+``` r
+plot(model)
+```
+
+![](L18_heritabilityEstimateDiscovery_Visualization_May2021_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+``` r
+summary(model)
+```
+
+    ## Warning: Parts of the model have not converged (some Rhats are > 1.05). Be
+    ## careful when analysing the results! We recommend running more iterations and/or
+    ## setting stronger priors.
+
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta
+    ## above 0.99 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## transitions-after-warmup
+
+    ##  Family: gaussian 
+    ##   Links: mu = identity; sigma = identity 
+    ## Formula: GrowthScale ~ (1 | gr(animal, cov = A)) + (1 | damID) + (1 | JarID) 
+    ##    Data: cc (Number of observations: 730) 
+    ## Samples: 6 chains, each with iter = 20000; warmup = 5000; thin = 20;
+    ##          total post-warmup samples = 4500
+    ## 
+    ## Group-Level Effects: 
+    ## ~animal (Number of levels: 730) 
+    ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sd(Intercept)     0.24      0.17     0.01     0.63 1.06       65       24
+    ## 
+    ## ~damID (Number of levels: 8) 
+    ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sd(Intercept)     0.54      0.22     0.23     1.08 1.01     1996      466
+    ## 
+    ## ~JarID (Number of levels: 73) 
+    ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sd(Intercept)     0.25      0.03     0.19     0.31 1.00     4237     4253
+    ## 
+    ## Population-Level Effects: 
+    ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## Intercept    -1.02      0.23    -1.50    -0.58 1.00     4608     4449
+    ## 
+    ## Family Specific Parameters: 
+    ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sigma     0.41      0.08     0.13     0.48 1.07       67       24
+    ## 
+    ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+    ## and Tail_ESS are effective sample size measures, and Rhat is the potential
+    ## scale reduction factor on split chains (at convergence, Rhat = 1).
+
+Lets check its predictive ability
+
+``` r
+pp_check(model,nsamples = 100)
+```
+
+![](L18_heritabilityEstimateDiscovery_Visualization_May2021_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+Not bad
+
+### Removing problematic chain
+
+``` r
+# Removing problematic chain
+model2 <- model 
+chain_remove <- 2
+model2$fit@sim$samples[[chain_remove]] <- NULL
+model2$fit@sim$chains <- 5
+model2$fit@stan_args[[chain_remove]] <- NULL
+model2$fit@stan_args[[1]]$chain_id <- 1
+model2$fit@stan_args[[2]]$chain_id <- 2
+model2$fit@stan_args[[3]]$chain_id <- 3
+model2$fit@stan_args[[4]]$chain_id <- 4
+model2$fit@stan_args[[5]]$chain_id <- 5
+
+plot(model2)
+```
+
+![](L18_heritabilityEstimateDiscovery_Visualization_May2021_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+``` r
+summary(model2)
+```
+
+    ## Warning in mapply(function(x, w) if (w > 0) x[-(1:w), , drop = FALSE] else x, :
+    ## longer argument not a multiple of length of shorter
+
+    ## Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta
+    ## above 0.99 may help. See http://mc-stan.org/misc/warnings.html#divergent-
+    ## transitions-after-warmup
+
+    ##  Family: gaussian 
+    ##   Links: mu = identity; sigma = identity 
+    ## Formula: GrowthScale ~ (1 | gr(animal, cov = A)) + (1 | damID) + (1 | JarID) 
+    ##    Data: cc (Number of observations: 730) 
+    ## Samples: 5 chains, each with iter = 20000; warmup = 5000; thin = 20;
+    ##          total post-warmup samples = 3750
+    ## 
+    ## Group-Level Effects: 
+    ## ~animal (Number of levels: 730) 
+    ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sd(Intercept)     0.22      0.15     0.01     0.57 1.01      422      323
+    ## 
+    ## ~damID (Number of levels: 8) 
+    ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sd(Intercept)     0.55      0.22     0.26     1.09 1.00     3451     1926
+    ## 
+    ## ~JarID (Number of levels: 73) 
+    ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sd(Intercept)     0.25      0.03     0.19     0.31 1.00     3664     3663
+    ## 
+    ## Population-Level Effects: 
+    ##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## Intercept    -1.02      0.23    -1.50    -0.58 1.00     3905     3702
+    ## 
+    ## Family Specific Parameters: 
+    ##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+    ## sigma     0.42      0.06     0.24     0.48 1.01      441      307
+    ## 
+    ## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+    ## and Tail_ESS are effective sample size measures, and Rhat is the potential
+    ## scale reduction factor on split chains (at convergence, Rhat = 1).
+
+### Comparing estimates of heritability and maternal effects from both MCMCglmm models and for both versions of BRMS models for Parent Control : Offspring Control
+
+``` r
+# First model
+posterior_brms <- data.frame(posterior_samples(model,
+                                               pars = c("sd_animal__Intercept",
+                                                        "sd_damID__Intercept",
+                                                        "sd_JarID__Intercept",
+                                                        "sigma")))
+posterior_brms <- posterior_brms^2
+h2_brms <- posterior_brms$sd_animal__Intercept/rowSums(posterior_brms)
+m2_brms <- posterior_brms$sd_damID__Intercept/rowSums(posterior_brms)
+
+p1 <- data.frame(model="brms (all chains)",component="h2",var1=h2_brms)
+p2 <- data.frame(model="brms (all chains)",component="m2",var1=m2_brms)
+#Second model
+posterior_brms <- data.frame(posterior_samples(model2,
+                                               pars = c("sd_animal__Intercept",
+                                                        "sd_damID__Intercept",
+                                                        "sd_JarID__Intercept",
+                                                        "sigma")))
+posterior_brms <- posterior_brms^2
+h2_brms <- posterior_brms$sd_animal__Intercept/rowSums(posterior_brms)
+m2_brms <- posterior_brms$sd_damID__Intercept/rowSums(posterior_brms)
+
+p3 <- data.frame(model="brms (outlier removed)",component="h2",var1=h2_brms)
+p4 <- data.frame(model="brms (outlier removed)",component="m2",var1=m2_brms)
+
+model_compare <- rbind(model_compare,p1,p2,p3,p4)
+
+ggplot(model_compare,aes(component,var1,colour=model)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_x_discrete(labels=c("Additive Genetic","Maternal")) +
+  labs(x="Additive Genetic and Maternal Effects",y="Proportional Effect",colour="",title="P:Exposed Off:Exposed") +
+   theme(plot.title = element_text(hjust = 0.5))
+```
+
+![](L18_heritabilityEstimateDiscovery_Visualization_May2021_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
 ## General Thoughts
 
 1.  The univariate model examining growth appears similar to the results
@@ -571,6 +792,15 @@ the perspective of a norm(ish) posterior distribution for most models
     the model and vice versa in another iteration, suggesting that these
     two effects may be somewhat confounded. (more thoughts on this in
     the next steps section).
+5.  The BRMS model appears to perform (at least for one treatment
+    combination) similar to the univariate model, althought based on
+    some of the errors the default parameterization for priors may need
+    to be changed. BEWARE, I increased the interations to 20000 and used
+    6 chains, well above the default to handle some of the effective
+    sample size errors I recieved when running with defaults. Even still
+    this doesn’t get rid of all errors and can lead to extensive run
+    times (to run the model took 28 hours with 32Gb of memory and 6
+    cores).
 
 ## Next Steps
 
@@ -579,7 +809,7 @@ the perspective of a norm(ish) posterior distribution for most models
     troubleshooting I am actively running a version of the model that is
     expected to take abuot 24 hours. The idea is to examine how the
     estimates of the variance components from this model compare to
-    those from the MCMCglmm as a final sanity check.
+    those from the MCMCglmm as a final sanity check. (FINISHED)
 2.  From some of the literature it appears one of the issues that I may
     be having is that the pedigree is not particularly well connect due
     to the assumption that all adults are unrelated. This means the
